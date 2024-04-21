@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import {Card, CardContent, Typography, IconButton, CardActions, Collapse, Box } from '@mui/material'
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown'
+import { stepStyles, getColor } from './styles';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -25,7 +26,7 @@ export default function StepCard(props) {
     };
 
     return (
-        <Card sx={{ width: '20vw', textAlign: 'center', margin: 'auto', backgroundColor: obj.isPassed ? 'green' : 'yellow' }}  >
+        <Card sx={{ ...stepStyles, backgroundColor: getColor(obj.isPassed) }}  >
             <CardContent>
                 <Typography>
                     {obj.stepName}
@@ -34,7 +35,7 @@ export default function StepCard(props) {
 
             <CardActions>
                 {
-                    obj.needsCalendar &&
+                    obj.additionalInfo != null  && obj.additionalInfo.length !== 0 &&
                     (<ExpandMore
                         expand={expand}
                         onClick={handleExpandClick}
