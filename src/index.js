@@ -25,12 +25,12 @@ const logOut = () => {
 root.render(
   <React.StrictMode>
     <CssBaseline/>
-    <html style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0}}>
+    <div style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
       <PageHeader onLogout={logOut}/>
         <main  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
           <StepsGrid stepsData = {steps}/>
         </main>
-    </html>
+    </div>
   </React.StrictMode>
 );
 
