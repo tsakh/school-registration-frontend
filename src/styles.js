@@ -5,5 +5,5 @@ export const stepStyles = {
 };
 
 export const getColor = (isPassed) => {
-    return isPassed ? '#31AD54' : '#F8EE05';
+    return isPassed ? '#12B413' : '#f5e256';
 };

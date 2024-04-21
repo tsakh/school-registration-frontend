@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import StepsGrid from './StepsGrid';
 import PageHeader from './ParentPageHeader';
+import { CssBaseline } from '@mui/material';
 
 const steps = [
   { stepName: 'Step 1', additionalInfo: '', isPassed: true, needsCalendar: true },
@@ -23,12 +24,14 @@ const logOut = () => {
 
 root.render(
   <React.StrictMode>
-
-    <PageHeader onLogout={logOut}/>
-      <main  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-        <StepsGrid stepsData = {steps}/>
-      </main>
-    </React.StrictMode>
+    <CssBaseline/>
+    <html style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0}}>
+      <PageHeader onLogout={logOut}/>
+        <main  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+          <StepsGrid stepsData = {steps}/>
+        </main>
+    </html>
+  </React.StrictMode>
 );
 
 
