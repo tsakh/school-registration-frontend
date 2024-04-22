@@ -5,16 +5,16 @@ import PageHeader from './ParentPageHeader';
 import { CssBaseline } from '@mui/material';
 
 const steps = [
-  { stepName: 'Step 1', additionalInfo: '', isPassed: true, needsCalendar: true },
-  { stepName: 'Step 2', additionalInfo: 'Info for Step 2 adding more for testing. Step 2 adding more for testing.', isPassed: true, needsCalendar: true },
-  { stepName: 'Step 3', additionalInfo: 'Info for Step 3', isPassed: true, needsCalendar: false },
-  { stepName: 'Step 4', additionalInfo: 'Info for Step 4', isPassed: false, needsCalendar: true },
-  { stepName: 'Step 5', additionalInfo: 'Info for Step 5', isPassed: false, needsCalendar: false },
-  { stepName: 'Step 6', additionalInfo: 'Info for Step 6', isPassed: false, needsCalendar: true },
-  { stepName: 'Step 7', additionalInfo: 'Info for Step 7', isPassed: false, needsCalendar: false },
-  { stepName: 'Step 8', additionalInfo: 'Info for Step 8', isPassed: false, needsCalendar: true },
-  { stepName: 'Step 9', additionalInfo: 'Info for Step 9', isPassed: false, needsCalendar: false },
-  { stepName: 'Step 10', additionalInfo: null, isPassed: false, needsCalendar: true },
+  { stepName: 'Step 1', additionalInfo: ['16:45 07/04/24', '17:40 07/04/24', '18:00 07/04/24', '18:15 07/04/24', '18:30 07/04/24', '18:45 07/04/24'], isPassed: true, needsCalendar: true, selected: null},
+  { stepName: 'Step 2', additionalInfo: 'Info for Step 2 adding more for testing. Step 2 adding more for testing.', isPassed: true, needsCalendar: false, selected: null},
+  { stepName: 'Step 3', additionalInfo: 'Info for Step 3', isPassed: true, needsCalendar: false, selected: null },
+  { stepName: 'Step 4', additionalInfo: 'Info for Step 4', isPassed: false, needsCalendar: false, selected: null},
+  { stepName: 'Step 5', additionalInfo: 'Info for Step 5', isPassed: false, needsCalendar: false, selected: null },
+  { stepName: 'Step 6', additionalInfo: 'Info for Step 6', isPassed: false, needsCalendar: false, selected: null },
+  { stepName: 'Step 7', additionalInfo: 'Info for Step 7', isPassed: false, needsCalendar: false, selected: null },
+  { stepName: 'Step 8', additionalInfo: 'Info for Step 8', isPassed: false, needsCalendar: false, selected: null },
+  { stepName: 'Step 9', additionalInfo: ['a', 'b', 'c', 'd', 'e', 'f'], isPassed: false, needsCalendar: true, selected: null },
+  { stepName: 'Step 10', additionalInfo: null, isPassed: false, needsCalendar: false, selected: null },
 ];
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

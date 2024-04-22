@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import {Card, CardContent, Typography, IconButton, CardActions, Collapse, Box } from '@mui/material'
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown'
 import { stepStyles, getColor } from './styles';
+import Calendar from './Calendar';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -14,6 +15,8 @@ const ExpandMore = styled((props) => {
         duration: theme.transitions.duration.shortest,
     }),
 }));
+
+
 
 export default function StepCard(props) {
 
@@ -50,10 +53,15 @@ export default function StepCard(props) {
             <Collapse in={expand} timeout="auto" >
 
                 <Box sx={{ height: '20vh', overflow: 'auto' }}>
-
-                    <Typography style={{overflowWra: 'break-word' }}>
-                        {obj.additionalInfo}
-                    </Typography>
+                    { !obj.needsCalendar  ? (
+                        <Typography style={{overflowWra: 'break-word' }}>
+            
+                            {obj.additionalInfo}
+                        </Typography>
+                    ) : (
+                        <Calendar options = {obj.additionalInfo}/>
+                    )
+                    }
                 </Box>
 
             </Collapse>
