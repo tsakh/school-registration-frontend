@@ -13,7 +13,7 @@ const steps = [
   { stepName: 'Step 6', additionalInfo: 'Info for Step 6', isPassed: false, needsCalendar: false, selected: null },
   { stepName: 'Step 7', additionalInfo: 'Info for Step 7', isPassed: false, needsCalendar: false, selected: null },
   { stepName: 'Step 8', additionalInfo: 'Info for Step 8', isPassed: false, needsCalendar: false, selected: null },
-  { stepName: 'Step 9', additionalInfo: ['a', 'b', 'c', 'd', 'e', 'f'], isPassed: false, needsCalendar: true, selected: null },
+  { stepName: 'Step 9', additionalInfo: ['a', 'b', 'c', 'd', 'e', 'f'], isPassed: false, needsCalendar: true, selected: 'k' },
   { stepName: 'Step 10', additionalInfo: null, isPassed: false, needsCalendar: false, selected: null },
 ];
 
