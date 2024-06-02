@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Box, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import StepCard from './StepCard'; 
+import StepCard from './StepCard';
 
-const StepCardList = () => {
+const StepCardList = ({ steps }) => {
     const [stepName, setStepName] = useState('');
     const [additionalInfo, setAdditionalInfo] = useState('');
     const [isCalendarEvent, setIsCalendarEvent] = useState(false);
-    const [cards, setCards] = useState([]);
+    const [cards, setCards] = useState(steps); // Initialize with steps prop
     const [editMode, setEditMode] = useState(false); 
     const [dialogOpen, setDialogOpen] = useState(false);
 
