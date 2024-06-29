@@ -60,7 +60,8 @@ export const signInPaperStyle = {
 
     height : '70vh',
     width : '60vw',
-    margin: '10vh auto'
+    margin: '10vh auto',
+    overflow: 'auto'
    
 }
 
