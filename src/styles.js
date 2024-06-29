@@ -55,3 +55,26 @@ export const elementsDiff = {
 export const selectBoxStyle = {
     width:'90vw'
 }
+
+export const signInPaperStyle = {
+
+    height : '70vh',
+    width : '60vw',
+    margin: '10vh auto'
+   
+}
+
+const singInColor = '#009999';
+export const signInIconStyle = {
+
+    marginTop: '10%',
+    backgroundColor: singInColor
+}
+
+export const signInButtonStyle = {
+    
+    width: '80%',
+    marginTop: '5%',
+    backgroundColor: singInColor
+
+}
