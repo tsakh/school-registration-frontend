@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { CssBaseline } from '@mui/material';
-import StepCardList from './StepCardList';
+import UpdatableStepsGrid from './UpdatableStepsGrid';
+
 
 const steps = [
   { stepName: 'Step 1', additionalInfo: ['16:45 07/04/24', '17:40 07/04/24', '18:00 07/04/24', '18:15 07/04/24', '18:30 07/04/24', '18:45 07/04/24'], isCalendarEvent: true, needsCalendar: true, selected: null},
@@ -16,6 +17,10 @@ const steps = [
   { stepName: 'Step 10', additionalInfo: null, isCalendarEvent: false, needsCalendar: false, selected: null },
 ];
 
+const stepsForUpdate = [{ stepName: 'Step 1', additionalInfo: "info1", isCalendarEvent: true, calendar: ['16:45 07/04/24', '17:40 07/04/24', '18:00 07/04/24', '18:15 07/04/24', '18:30 07/04/24','18:45 07/04/24'], needsCalendar: true, selected: null},
+, { stepName: 'Step 2', additionalInfo: "info1", isCalendarEvent: false, calendar: null, needsCalendar: false, selected: null},
+];
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const logOut = () => {
     console.log("log out")
@@ -26,7 +31,7 @@ root.render(
     <CssBaseline/>
     <div style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
         <div>
-            <StepCardList steps={steps} />
+            <UpdatableStepsGrid stepsData={stepsForUpdate} />
         </div>
     </div>
   </React.StrictMode>
