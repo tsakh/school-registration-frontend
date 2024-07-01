@@ -3,7 +3,23 @@ import ReactDOM from 'react-dom/client';
 import StepsGrid from './StepsGrid';
 import PageHeader from './ParentPageHeader';
 import { CssBaseline } from '@mui/material';
+import i18next from 'i18next';
+import { I18nextProvider}  from 'react-i18next';
+import translations_geo from './locales/translations/geo/translations.json'
+import translations_en from './locales/translations/en/translations.json'
 
+i18next.init({
+  interpolation :{escapeValue: false},
+  lng: "en",
+  resources :{
+    en :{
+      translation: translations_en
+    },
+    geo: {
+      translation :translations_geo
+    }
+  }
+})
 const steps = [
   { stepName: 'Step 1', additionalInfo: ['16:45 07/04/24', '17:40 07/04/24', '18:00 07/04/24', '18:15 07/04/24', '18:30 07/04/24', '18:45 07/04/24'], isPassed: true, needsCalendar: true, selected: null},
   { stepName: 'Step 2', additionalInfo: 'Info for Step 2 adding more for testing. Step 2 adding more for testing.', isPassed: true, needsCalendar: false, selected: null},
@@ -24,13 +40,17 @@ const logOut = () => {
 
 root.render(
   <React.StrictMode>
+
+    <I18nextProvider i18n={i18next}>
     <CssBaseline/>
-    <div style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
+     <div style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
       <PageHeader onLogout={logOut}/>
         <main  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
           <StepsGrid stepsData = {steps}/>
         </main>
-    </div>
+    </div> 
+    </I18nextProvider>
+   
   </React.StrictMode>
 );
 
