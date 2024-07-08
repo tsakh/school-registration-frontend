@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { CssBaseline } from '@mui/material';
-import StepCardList from './StepCardList';
+import AdminStepCreationPage from './StepCardList';
 
 const steps = [
   { stepName: 'Step 1', additionalInfo: ['16:45 07/04/24', '17:40 07/04/24', '18:00 07/04/24', '18:15 07/04/24', '18:30 07/04/24', '18:45 07/04/24'], isCalendarEvent: true, needsCalendar: true, selected: null},
@@ -26,7 +26,7 @@ root.render(
     <CssBaseline/>
     <div style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
         <div>
-            <StepCardList steps={steps} />
+            <AdminStepCreationPage steps={steps} />
         </div>
     </div>
   </React.StrictMode>

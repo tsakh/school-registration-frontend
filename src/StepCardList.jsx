@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Box, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import StepCard from './StepCard';
+import StepForAdmin from './StepForAdmin';
 
-const StepCardList = ({ steps }) => {
+const AdminStepCreationPage = ({ steps }) => {
     const [stepName, setStepName] = useState('');
     const [additionalInfo, setAdditionalInfo] = useState('');
     const [isCalendarEvent, setIsCalendarEvent] = useState(false);
-    const [cards, setCards] = useState(steps); // Initialize with steps prop
+    const [cards, setCards] = useState(steps); 
     const [editMode, setEditMode] = useState(false); 
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -66,7 +66,7 @@ const StepCardList = ({ steps }) => {
             <Grid container spacing={2} justifyContent='center' alignItems='center' textAlign='center'>
                 {cards.map((card, index) => (
                     <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                        <StepCard 
+                        <StepForAdmin 
                             stepData={card} 
                             onDelete={handleDeleteCard} 
                             disabled={!editMode} 
@@ -119,4 +119,4 @@ const StepCardList = ({ steps }) => {
     );
 };
 
-export default StepCardList;
+export default AdminStepCreationPage;
