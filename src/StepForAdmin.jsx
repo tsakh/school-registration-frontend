@@ -4,7 +4,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EventIcon from '@mui/icons-material/Event';
 
-const StepCard = ({ stepData, onDelete, disabled }) => {
+const StepForAdmin = ({ stepData, onDelete, disabled }) => {
     const [expanded, setExpanded] = useState(false);
 
     const handleExpandClick = () => {
@@ -46,4 +46,4 @@ const StepCard = ({ stepData, onDelete, disabled }) => {
     );
 };
 
-export default StepCard;
+export default StepForAdmin;
