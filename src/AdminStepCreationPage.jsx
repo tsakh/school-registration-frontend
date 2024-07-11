@@ -3,11 +3,11 @@ import { Button, Box, Grid, TextField, Dialog, DialogActions, DialogContent, Dia
 import AddIcon from '@mui/icons-material/Add';
 import StepForAdmin from './StepForAdmin';
 
-const AdminStepCreationPage = ({ steps }) => {
+const AdminStepCreationPage = ({ stepsData }) => {
     const [stepName, setStepName] = useState('');
     const [additionalInfo, setAdditionalInfo] = useState('');
     const [isCalendarEvent, setIsCalendarEvent] = useState(false);
-    const [cards, setCards] = useState(steps); 
+    const [cards, setCards] = useState(stepsData); 
     const [editMode, setEditMode] = useState(false); 
     const [dialogOpen, setDialogOpen] = useState(false);
 

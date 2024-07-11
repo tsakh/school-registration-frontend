@@ -37,7 +37,7 @@ const steps = [
 ];
 
 const stepsForUpdate = [{ stepName: 'Step 1', additionalInfo: "info1", isCalendarEvent: true, calendar: ['16:45 07/04/24', '17:40 07/04/24', '18:00 07/04/24', '18:15 07/04/24', '18:30 07/04/24','18:45 07/04/24'], needsCalendar: true, selected: null},
-, { stepName: 'Step 2', additionalInfo: "info1", isCalendarEvent: false, calendar: null, needsCalendar: false, selected: null},
+{ stepName: 'Step 2', additionalInfo: "info1", isCalendarEvent: false, calendar: null, needsCalendar: false, selected: null},
 ];
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -52,7 +52,7 @@ root.render(
     <CssBaseline/>
     <div style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
         <div>
-            <UpdatableStepsGrid stepsData={stepsForUpdate} />
+            <AdminStepCreationPage stepsData={steps} />
         </div>
     </div>
 
