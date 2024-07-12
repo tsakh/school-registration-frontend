@@ -30,6 +30,7 @@ export default function SignUpForm() {
       parentFirstName: data.get('parentFirstName'),
       parentLastName: data.get('parentLastName'),
       birthday: data.get('birthday'),
+      personalNumber : data.get('personalNumber')
     });
   };
 
@@ -66,6 +67,14 @@ export default function SignUpForm() {
                 style={{ marginLeft: '8px' }}
               />
             </Box>
+            <TextField
+              margin="normal"
+              required
+              style={{ width: '80%' }}
+              id="personalNumber"
+              label="პირადი ნომერი"
+              name="personalNumber"
+            />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <Box display="flex" width="80%" margin="normal">
                 <DatePicker

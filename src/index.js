@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import StepsGrid from './StepsGrid';
 import PageHeader from './ParentPageHeader';
 import { CssBaseline } from '@mui/material';
+import SignUpForm from './SignUpForm';
 
 const steps = [
   { stepName: 'Step 1', additionalInfo: ['16:45 07/04/24', '17:40 07/04/24', '18:00 07/04/24', '18:15 07/04/24', '18:30 07/04/24', '18:45 07/04/24'], isPassed: true, needsCalendar: true, selected: null},
@@ -25,12 +26,13 @@ const logOut = () => {
 root.render(
   <React.StrictMode>
     <CssBaseline/>
-    <div style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
+    {/* <div style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
       <PageHeader onLogout={logOut}/>
         <main  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
           <StepsGrid stepsData = {steps}/>
         </main>
-    </div>
+    </div> */}
+  <SignUpForm/>
   </React.StrictMode>
 );
 
