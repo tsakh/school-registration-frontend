@@ -56,6 +56,30 @@ export const selectBoxStyle = {
     width:'90vw'
 }
 
+
+
+export const signUpPaperStyle = {
+
+    height : '80vh',
+    width : '70vw',
+    margin: '10vh auto',
+    overflow : 'auto'
+   
+}
+
+const singUpColor = '#009999';
+export const signUpIconStyle = {
+
+    marginTop: '10%',
+    backgroundColor: singUpColor
+}
+
+export const signUpButtonStyle = {
+    
+    width: '80%',
+    marginTop: '5%',
+    backgroundColor: singUpColor
+
 export const signInPaperStyle = {
 
     height : '70vh',
