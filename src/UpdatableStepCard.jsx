@@ -1,7 +1,28 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Card, CardContent, Typography, IconButton, CardActions, Collapse, Box, TextField, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, List, ListItem } from '@mui/material';
+import moment from 'moment';
+import {
+    Card,
+    CardContent,
+    Typography,
+    IconButton,
+    CardActions,
+    Collapse,
+    Box,
+    TextField,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    List,
+    ListItem
+} from '@mui/material';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -17,13 +38,17 @@ const ExpandMore = styled((props) => {
 export default function UpdatableStepCard(props) {
     const obj = props.stepData;
 
-    const [expand, setExpand] = React.useState(false);
-    const [additionalInfo, setAdditionalInfo] = React.useState(obj.additionalInfo || '');
-    const [calendar, setCalendar] = React.useState(obj.calendar || []);
-    const [dialogOpen, setDialogOpen] = React.useState(false);
+    const [expand, setExpand] = useState(false);
+    const [additionalInfo, setAdditionalInfo] = useState(obj.additionalInfo || '');
+    const [calendar, setCalendar] = useState(
+        (obj.calendar || []).map(date => date ? new Date(date) : null)
+    );
+    const [dialogOpen, setDialogOpen] = useState(false);
 
-    const [tempAdditionalInfo, setTempAdditionalInfo] = React.useState(obj.additionalInfo || '');
-    const [tempCalendar, setTempCalendar] = React.useState(obj.calendar ? [...obj.calendar] : []);
+    const [tempAdditionalInfo, setTempAdditionalInfo] = useState(obj.additionalInfo || '');
+    const [tempCalendar, setTempCalendar] = useState(
+        (obj.calendar ? [...obj.calendar] : []).map(date => date ? new Date(date) : null)
+    );
 
     const handleExpandClick = () => {
         setExpand(!expand);
@@ -31,7 +56,7 @@ export default function UpdatableStepCard(props) {
 
     const handleEditClick = () => {
         setTempAdditionalInfo(additionalInfo);
-        setTempCalendar([...calendar]); // ensure calendar is never null or undefined
+        setTempCalendar([...calendar]);
         setDialogOpen(true);
     };
 
@@ -46,14 +71,14 @@ export default function UpdatableStepCard(props) {
         // here updated information should be sent to a server
     };
 
-    const handleTempCalendarChange = (index, value) => {
+    const handleTempCalendarChange = (index, date) => {
         const newTempCalendar = [...tempCalendar];
-        newTempCalendar[index] = value;
+        newTempCalendar[index] = date;
         setTempCalendar(newTempCalendar);
     };
 
     const handleAddTempCalendarEvent = () => {
-        setTempCalendar([...tempCalendar, '']);
+        setTempCalendar([...tempCalendar, new Date()]);
     };
 
     return (
@@ -83,7 +108,7 @@ export default function UpdatableStepCard(props) {
                         <List>
                             {calendar.map((event, index) => (
                                 <ListItem key={index}>
-                                    <Typography>{event}</Typography>
+                                    <Typography>{event ? event.toString() : 'Invalid date'}</Typography>
                                 </ListItem>
                             ))}
                         </List>
@@ -111,11 +136,17 @@ export default function UpdatableStepCard(props) {
                         <List>
                             {tempCalendar.map((event, index) => (
                                 <ListItem key={index}>
-                                    <TextField
-                                        fullWidth
-                                        value={event}
-                                        onChange={(e) => handleTempCalendarChange(index, e.target.value)}
-                                    />
+                                    <div className="customDatePickerContainer">
+                                        <DatePicker
+                                            selected={event}
+                                            onChange={(date) => handleTempCalendarChange(index, date)}
+                                            showTimeSelect
+                                            dateFormat="MMMM d, yyyy h:mm aa"
+                                            placeholderText="Select a date and time"
+                
+                                            minimumDate={moment().toDate()}
+                                        />
+                                    </div>
                                 </ListItem>
                             ))}
                             <ListItem>
