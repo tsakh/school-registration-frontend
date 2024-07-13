@@ -37,7 +37,7 @@ const steps = [
   { stepName: 'Step 10', additionalInfo: null, isCalendarEvent: false, needsCalendar: false, selected: null },
 ];
 
-const stepsForUpdate = [{ stepName: 'Step 2', additionalInfo: "info1", isCalendarEvent: true, calendar: null, needsCalendar: true, selected: null},
+const stepsForUpdate = [{ stepName: 'Step 2', additionalInfo: "info1", isCalendarEvent: true, calendar: [new Date("2024-07-13T10:30:00")], needsCalendar: true, selected: null},
 ];
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

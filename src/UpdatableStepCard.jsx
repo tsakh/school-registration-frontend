@@ -120,9 +120,14 @@ export default function UpdatableStepCard(props) {
                 <Button onClick={handleEditClick}>Edit</Button>
             </CardActions>
 
-            <Dialog open={dialogOpen} onClose={handleDialogClose}>
+            <Dialog 
+                open={dialogOpen} 
+                onClose={handleDialogClose}
+                maxWidth="lg"
+                fullWidth
+            >
                 <DialogTitle>Edit Additional Information</DialogTitle>
-                <DialogContent>
+                <DialogContent sx={{ height: '75vh' }}>
                     <DialogContentText>
                         {obj.stepName}
                     </DialogContentText>
@@ -139,11 +144,10 @@ export default function UpdatableStepCard(props) {
                                     <div className="customDatePickerContainer">
                                         <DatePicker
                                             selected={event}
-                                            onChange={(date) => handleTempCalendarChange(index, date)}
                                             showTimeSelect
+                                            onChange={(date) => handleTempCalendarChange(index, date)}
                                             dateFormat="MMMM d, yyyy h:mm aa"
                                             placeholderText="Select a date and time"
-                
                                             minimumDate={moment().toDate()}
                                         />
                                     </div>
