@@ -1,3 +1,19 @@
 {
- "Greeting" :"Hello"
+    
+    "SignUpPage": {
+        "FormName":  "School Registration Form",
+        "StudentName": "Student Name",
+        "StudentSurname": "Student Surname",
+        "StudentPersonalId": "Personal ID",
+        "BirthDate": "Birth Date",
+        "ParentName": "Parent Name",
+        "ParentSurname": "Parent Surname",
+        "ParentEmail": "Parent Email",
+        "Grade": "Grade Applying For",
+        "Password": "Password",
+        "ButtonLabel" : "Register",
+        "LinkToSignIn" : "Already have an account? Sign In",
+        "language" : "English"
+    }
+    
 }

@@ -1,13 +1,35 @@
 import React from 'react';
-import {Paper,Avatar,Typography,Box,TextField,Button,Grid,Link,Select,MenuItem,FormControl, InputLabel} from '@mui/material';
+import {Menu,ListItemText,ListItemIcon,Paper,Avatar,Typography,Box,TextField,Button,Grid,Link,Select,MenuItem,FormControl, InputLabel} from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import { signUpPaperStyle, signUpIconStyle, signUpButtonStyle } from './styles';
+import LanguageIcon from '@mui/icons-material/Language';
+import { signUpPaperStyle, signUpIconStyle, signUpButtonStyle,signUpLangSwichStyle } from './styles';
 import GradeList from './GradeList';
+import { useTranslation } from 'react-i18next';
+
 
 export default function SignUpForm() {
+
+  const { t , i18n} = useTranslation('translation', { keyPrefix: 'SignUpPage' });
+
+
+  const [language, setLanguage] = React.useState(null);
+
+  const handleOpenMenu = (event) => {
+      setLanguage(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+      setLanguage(null);
+  };
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang); 
+    handleCloseMenu(); 
+};
+
   const [grades, setGrades] = React.useState([]);
   const [grade, setGrade] = React.useState('');
 
@@ -36,13 +58,46 @@ export default function SignUpForm() {
 
   return (
     <Paper style={signUpPaperStyle} elevation={1}>
+      <Box style={signUpLangSwichStyle}>
+            <Button
+                aria-controls="language-menu"
+                aria-haspopup="true"
+                onClick={handleOpenMenu}
+                startIcon={<LanguageIcon />}
+                variant="text"
+            >
+            
+                {t('language')}
+            </Button>
+            <Menu
+                id="language-menu"
+                anchorEl={language}
+                keepMounted
+                open={Boolean(language)}
+                onClose={handleCloseMenu}
+            >
+                <MenuItem onClick={() => changeLanguage('en')}>
+                    <ListItemIcon>
+                        <img src="/flags/en.png"  width = '15vw' height = '15vh' alt="English" />
+                    </ListItemIcon>
+                    <ListItemText primary="English" />
+                </MenuItem>
+                <MenuItem onClick={() => changeLanguage('geo')}>
+                    <ListItemIcon>
+                        <img src="/flags/geo.png" width = '15vw' height = '15vh' alt="Georgian" />
+                    </ListItemIcon>
+                    <ListItemText primary="ქართული" />
+                </MenuItem>
+            
+            </Menu>
+        </Box>
       <Grid container justifyContent="center" alignItems="center">
         <Grid item xs={12} align="center">
           <Avatar style={signUpIconStyle}>
             <AppRegistrationIcon />
           </Avatar>
           <Typography variant="h6" style={{ marginTop: '5%' }}>
-            სკოლაში რეგისტრაცია
+            {t('FormName')}
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit} mt={3}>
@@ -52,7 +107,7 @@ export default function SignUpForm() {
                 required
                 fullWidth
                 id="studentFirstName"
-                label="მოსწავლის სახელი"
+                label= {t('StudentName')}
                 name="studentFirstName"
                 autoFocus
                 style={{ marginRight: '8px' }}
@@ -62,7 +117,7 @@ export default function SignUpForm() {
                 required
                 fullWidth
                 id="studentLastName"
-                label="მოსწავლის გვარი"
+                label={t('StudentSurname')}
                 name="studentLastName"
                 style={{ marginLeft: '8px' }}
               />
@@ -72,7 +127,7 @@ export default function SignUpForm() {
               required
               style={{ width: '80%' }}
               id="personalNumber"
-              label="პირადი ნომერი"
+              label={t('StudentPersonalId')}
               name="personalNumber"
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -81,8 +136,8 @@ export default function SignUpForm() {
                   id="birthday"
                   name="birthday"
                   required
-                  label="დაბადების თარიღი"
-                />
+                  label={t('BirthDate')}
+                  />
               </Box>
             </LocalizationProvider>
             <Box display="flex" justifyContent="space-between" width="80%" margin="normal">
@@ -91,7 +146,7 @@ export default function SignUpForm() {
                 required
                 fullWidth
                 id="parentFirstName"
-                label="მშობლის სახელი"
+                label={t('ParentName')}
                 name="parentFirstName"
                 autoFocus
                 style={{ marginRight: '8px' }}
@@ -101,7 +156,7 @@ export default function SignUpForm() {
                 required
                 fullWidth
                 id="parentLastName"
-                label="მშობლის გვარი"
+                label={t('ParentSurname')}
                 name="parentLastName"
                 style={{ marginLeft: '8px' }}
               />
@@ -111,11 +166,11 @@ export default function SignUpForm() {
               required
               style={{ width: '80%' }}
               id="email"
-              label="მშობლის მეილი"
+              label={t('ParentEmail')}
               name="email"
             />
             <FormControl style={{ width: '80%', marginTop: '16px' }} margin="normal" required>
-              <InputLabel id="grade-label">Grade Applying For</InputLabel>
+              <InputLabel id="grade-label">{t('Grade')}</InputLabel>
               <Select
                 labelId="grade-label"
                 name="grade"
@@ -135,7 +190,7 @@ export default function SignUpForm() {
               required
               style={{ width: '80%' }}
               name="password"
-              label="პაროლი"
+              label={t('Password')}
               type="password"
               id="password"
             />
@@ -144,12 +199,12 @@ export default function SignUpForm() {
               type="submit"
               variant="contained"
             >
-              რეგისტრაცია
+              {t('ButtonLabel')}
             </Button>
             <Box mt={2}>
               <Box display="flex" justifyContent="space-between" width="80%">
                 <Link href="#" variant="body2">
-                  გაქვთ ანგარიში? შესვლა
+                {t('LinkToSignIn')}
                 </Link>
               </Box>
             </Box>

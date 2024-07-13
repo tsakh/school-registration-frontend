@@ -1,3 +1,17 @@
 {
-    "Greeting" :"გამარჯობა"
+    "SignUpPage": {
+        "FormName":  "სკოლაში რეგისტრაციის ფორმა",
+        "StudentName": "მოსწავლის სახელი",
+        "StudentSurname": "მოსწავლის გვარი",
+        "StudentPersonalId": "პირადი ნომერი",
+        "BirthDate": "დაბადების თარიღი",
+        "ParentName": "მშობლის სახელი",
+        "ParentSurname": "მშობლის გვარი",
+        "ParentEmail": "მეილი",
+        "Grade": "სარეგისტრაციო კლასი",
+        "Password": "პაროლი",
+        "ButtonLabel" : "რეგისტრაცია",
+        "LinkToSignIn" : "გაქვთ ანგარიში? შესვლა",
+        "language" : "ქართული"
+    }
 }

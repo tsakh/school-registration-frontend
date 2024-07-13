@@ -80,6 +80,12 @@ export const signUpButtonStyle = {
     marginTop: '5%',
     backgroundColor: singUpColor
 
+}
+
+export const signUpLangSwichStyle = {
+    height : '2vh'
+}
+
 export const signInPaperStyle = {
 
     height : '70vh',
@@ -103,3 +109,5 @@ export const signInButtonStyle = {
     backgroundColor: singInColor
 
 }
+
+
