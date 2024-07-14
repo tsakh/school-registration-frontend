@@ -1,5 +1,7 @@
 {
-    
+    "Common" : {
+        "Language" : "English"
+    },
     "SignUpPage": {
         "FormName":  "School Registration Form",
         "StudentName": "Student Name",
@@ -12,8 +14,15 @@
         "Grade": "Grade Applying For",
         "Password": "Password",
         "ButtonLabel" : "Register",
-        "LinkToSignIn" : "Already have an account? Sign In",
-        "language" : "English"
+        "LinkToSignIn" : "Already have an account? Sign In"
+       
+    },
+    "SignInPage" : {
+        "EnterSystem" : "Login to the system",
+        "Email" : "Email",
+        "Password" : "Password",
+        "ForgotPassword" : "Forgot your password?",
+        "Register" : "Register"
     }
     
 }

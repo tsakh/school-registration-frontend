@@ -86,6 +86,10 @@ export const signUpLangSwichStyle = {
     height : '2vh'
 }
 
+export const signInLangSwichStyle = {
+    height : '1vh'
+}
+
 export const signInPaperStyle = {
 
     height : '70vh',

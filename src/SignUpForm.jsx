@@ -12,6 +12,8 @@ import { useTranslation } from 'react-i18next';
 
 export default function SignUpForm() {
 
+  const {t : tCommon} =  useTranslation('translation', { keyPrefix: 'Common' });
+
   const { t , i18n} = useTranslation('translation', { keyPrefix: 'SignUpPage' });
 
 
@@ -67,7 +69,7 @@ export default function SignUpForm() {
                 variant="text"
             >
             
-                {t('language')}
+                {tCommon('Language')}
             </Button>
             <Menu
                 id="language-menu"

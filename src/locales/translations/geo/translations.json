@@ -1,4 +1,7 @@
 {
+    "Common" : {
+        "Language" : "ქართული"
+    },
     "SignUpPage": {
         "FormName":  "სკოლაში რეგისტრაციის ფორმა",
         "StudentName": "მოსწავლის სახელი",
@@ -11,7 +14,14 @@
         "Grade": "სარეგისტრაციო კლასი",
         "Password": "პაროლი",
         "ButtonLabel" : "რეგისტრაცია",
-        "LinkToSignIn" : "გაქვთ ანგარიში? შესვლა",
-        "language" : "ქართული"
+        "LinkToSignIn" : "გაქვთ ანგარიში? შესვლა"
+    },
+    "SignInPage" : {
+        
+        "EnterSystem" : "სისტემაში შესვლა",
+        "Email" : "მეილი",
+        "Password" : "პაროლი",
+        "ForgotPassword" : "დაგავიწყდა პაროლი?",
+        "Register" : "რეგისტრაცია"
     }
 }
