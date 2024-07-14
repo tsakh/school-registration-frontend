@@ -81,7 +81,7 @@ export default function SignInForm(){
                     <SchoolIcon />
                   </Avatar>
                   <Typography variant="h6" style={{marginTop: '5%'}}>
-                    {t('EnterSystem')}
+                    {t('FormName')}
                   </Typography>
                   <Box component="form" onSubmit={handleSubmit} mt={3}>
                     <TextField

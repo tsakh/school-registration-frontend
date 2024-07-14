@@ -37,6 +37,7 @@ export const progressTabStyle = {
 }
 
 export const questionnairePageStyle = {
+
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -45,10 +46,13 @@ export const questionnairePageStyle = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
+
+   
 }
 
 export const elementsDiff = {
-    marginY: '2vh'
+    marginY: '2vh',
+    width : '50vw'
 }
 
 
@@ -99,6 +103,18 @@ export const signInPaperStyle = {
    
 }
 
+
+export const questionnaireAvatar = {
+
+    margin: '2%',
+    backgroundColor: '#1976d2'
+}
+
+export const questionnareButton = {
+
+    width : '50vw',
+    backgroundColor : '#1976d2'
+}
 const singInColor = '#009999';
 export const signInIconStyle = {
 
@@ -115,3 +131,9 @@ export const signInButtonStyle = {
 }
 
 
+export const questionnaireLangSwitch = {
+    height : '2vh',
+    position : 'absolute',
+    top : '0vh',
+    right : '5vw'
+}

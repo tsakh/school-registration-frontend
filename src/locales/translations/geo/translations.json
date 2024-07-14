@@ -18,10 +18,19 @@
     },
     "SignInPage" : {
         
-        "EnterSystem" : "სისტემაში შესვლა",
+        "FormName" : "სისტემაში შესვლა",
         "Email" : "მეილი",
         "Password" : "პაროლი",
         "ForgotPassword" : "დაგავიწყდა პაროლი?",
         "Register" : "რეგისტრაცია"
+    },
+    "Questionnaire" : {
+        "FormName" : "სკოლაში რეგისტრაციის კითხვარი",
+        "PhoneNumber" : "საკონტაქტო ნომერი",
+        "CurrentSchool" : "მიმდინარე სკოლა:",
+        "SourceOfInfo" : "როგორ გაიგეთ ჩვენი სკოლის შესახებ?",
+        "SpecialNeeds" : "სსსმ მოსწავლე",
+        "SiblingsInSameSchool" : "რეგისტრირებულის და/ძმა ამ სკოლის მოსწავლეა",
+        "Submit" : "დადასტურება"
     }
 }

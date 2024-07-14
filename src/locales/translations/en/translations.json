@@ -18,11 +18,20 @@
        
     },
     "SignInPage" : {
-        "EnterSystem" : "Login to the system",
+        "FormName" : "Login to the system",
         "Email" : "Email",
         "Password" : "Password",
         "ForgotPassword" : "Forgot your password?",
         "Register" : "Register"
+    },
+    "Questionnaire" : {
+        "FormName" : "School Registration Questionnaire",
+        "PhoneNumber" : "Phone number",
+        "CurrentSchool" : "Current School",
+        "SourceOfInfo" : "How did you get information about our school?",
+        "SpecialNeeds" : "SEN Student",
+        "SiblingsInSameSchool" : "Sibling(s) of a registered student attend this school",
+        "Submit" : "Submit"
     }
     
 }
