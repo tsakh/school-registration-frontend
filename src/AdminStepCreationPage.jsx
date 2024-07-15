@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Box, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import StepForAdmin from './StepForAdmin';
+import AdminSideMenu from './AdminSideMenu';
 
 const AdminStepCreationPage = ({ stepsData }) => {
     const [stepName, setStepName] = useState('');
@@ -43,6 +44,7 @@ const AdminStepCreationPage = ({ stepsData }) => {
 
     return (
         <Box>
+            <AdminSideMenu />
             <Box mb={2} textAlign='center'>
                 <Button
                     variant="contained"
