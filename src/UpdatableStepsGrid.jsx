@@ -3,7 +3,7 @@ import { Box, Grid} from '@mui/material';
 import UpdatableStepCard from './UpdatableStepCard';
 import AdminSideMenu from './AdminSideMenu';
 
-export default function StepsGrid(props) {
+export default function UpdatableStepsGrid(props) {
     const { stepsData, updateStepData } = props;
 
     return (
