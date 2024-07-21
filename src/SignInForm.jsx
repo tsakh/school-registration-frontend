@@ -5,13 +5,18 @@ import SchoolIcon from '@mui/icons-material/School';
 import { signInPaperStyle, signInIconStyle, signInButtonStyle, signInLangSwichStyle } from './styles';
 import { useTranslation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
+import { useNavigate } from 'react-router-dom';
 
-
+import useAuth from './customHooks/useAuth';
 export default function SignInForm(){
+
+  const navigate = useNavigate();
+
 
   const {t : tCommon} =  useTranslation('translation', { keyPrefix: 'Common' });
   const { t , i18n} = useTranslation('translation', { keyPrefix: 'SignInPage' });
 
+  const {auth,setAuth} = useAuth();
 
   const [language, setLanguage] = React.useState(null);
 
@@ -31,10 +36,10 @@ export default function SignInForm(){
   const handleSubmit = (event) => {
   event.preventDefault();
       const data = new FormData(event.currentTarget);
-      console.log({
-          email: data.get('email'),
-          password: data.get('password'),
-      });
+      console.log('Before setAuth:', auth);
+      setAuth({ role: 'admin' });
+     
+      navigate('/add');
   };
 
 
