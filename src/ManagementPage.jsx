@@ -1,9 +1,10 @@
 import * as React from 'react';
 import SearchBar from "./SearchBar";
 import StudentsList from "./StudentsGrid";
-import { Container,Dialog, Typography,Paper } from '@mui/material';
+import { Container,Dialog, Typography,Paper, Box } from '@mui/material';
 import StudentProgress from './StudentProgress';
 import { managementPageStyle,progressTabStyle} from './styles';
+import AdminSideMenu from './AdminSideMenu';
 
 //should be removed
 
@@ -67,22 +68,25 @@ export default function ManagementPage(){
     };
 
     return (
-        <Container sx={managementPageStyle}>
-            <SearchBar onSearchChange={handleSearchChange}/>
-            <StudentsList students={students} onRowClick={handleRowClick}/>
+        <Box>
+            <AdminSideMenu/>
+            <Container sx={managementPageStyle}>
+                <SearchBar onSearchChange={handleSearchChange}/>
+                <StudentsList students={students} onRowClick={handleRowClick}/>
 
-            <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
-        
-            {selectedStudent && (
-              <Paper elevation={3} sx={progressTabStyle} >
-                <Typography >სახელი {selectedStudent.firstName}</Typography>
-                <Typography >გვარი: {selectedStudent.lastName}</Typography>
-                <Typography >პირადი ნომერი: {selectedStudent.personalId}</Typography>
-                <StudentProgress stepsInfo={testProgress} />
-              </Paper>
-          )}
-            </Dialog>
-        </Container>
+                <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+            
+                {selectedStudent && (
+                <Paper elevation={3} sx={progressTabStyle} >
+                    <Typography >სახელი {selectedStudent.firstName}</Typography>
+                    <Typography >გვარი: {selectedStudent.lastName}</Typography>
+                    <Typography >პირადი ნომერი: {selectedStudent.personalId}</Typography>
+                    <StudentProgress stepsInfo={testProgress} />
+                </Paper>
+            )}
+                </Dialog>
+            </Container>
+        </Box>
         
     );
 }
