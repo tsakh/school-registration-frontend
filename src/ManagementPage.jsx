@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { useState } from 'react';
 import SearchBar from "./SearchBar";
 import StudentsList from "./StudentsGrid";
-import { Container,Dialog, Typography,Paper, Box } from '@mui/material';
+import { Container, Dialog, Typography, Paper, Box } from '@mui/material';
 import StudentProgress from './StudentProgress';
-import { managementPageStyle,progressTabStyle} from './styles';
+import { managementPageStyle, progressTabStyle } from './styles';
 import AdminSideMenu from './AdminSideMenu';
 
 //should be removed
@@ -31,7 +32,6 @@ const testStudents = [
     { id: 20, firstName: 'მარიამ', lastName: 'ჩირაქაძე', personalId: '95969798905' },
 ];
 
-  
 const testProgress = [
     { id: 1, name: "Step 1", isPassed: true },
     { id: 2, name: "Step 2", isPassed: false },
@@ -40,53 +40,45 @@ const testProgress = [
     { id: 5, name: "Step 5", isPassed: true }
 ];
 
-  
-
-export default function ManagementPage(){
-
-    const [students, setStudents] = React.useState([...testStudents]);
-    const [selectedStudent, setSelectedStudent] = React.useState(null);
-    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+export default function ManagementPage() {
+    const [students, setStudents] = useState([...testStudents]);
+    const [selectedStudent, setSelectedStudent] = useState(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [menuHover, setMenuHover] = useState(false);
 
     const handleSearchChange = (event) => {
-        console.log(event.target.value);
         const query = event.target.value.trim();
-        const filteredStudents = testStudents.filter(currStudent => 
-            currStudent.personalId.includes(query));
-
+        const filteredStudents = testStudents.filter(currStudent => currStudent.personalId.includes(query));
         setStudents(query === '' ? testStudents : filteredStudents);
-    }
+    };
 
     const handleRowClick = (student) => {
         setSelectedStudent(student);
         setIsDialogOpen(true);
-      };
-    
+    };
 
     const handleCloseDialog = () => {
         setIsDialogOpen(false);
     };
 
     return (
-        <Box>
-            <AdminSideMenu/>
-            <Container sx={managementPageStyle}>
-                <SearchBar onSearchChange={handleSearchChange}/>
-                <StudentsList students={students} onRowClick={handleRowClick}/>
+        <Box sx={{ display: 'flex' }}>
+            <AdminSideMenu onHover={setMenuHover} />
+            <Container sx={{ ...managementPageStyle, ml: menuHover ? '20vw' : '5vw', transition: 'margin-left 0.3s' }}>
+                <SearchBar onSearchChange={handleSearchChange} />
+                <StudentsList students={students} onRowClick={handleRowClick} />
 
                 <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
-            
-                {selectedStudent && (
-                <Paper elevation={3} sx={progressTabStyle} >
-                    <Typography >სახელი {selectedStudent.firstName}</Typography>
-                    <Typography >გვარი: {selectedStudent.lastName}</Typography>
-                    <Typography >პირადი ნომერი: {selectedStudent.personalId}</Typography>
-                    <StudentProgress stepsInfo={testProgress} />
-                </Paper>
-            )}
+                    {selectedStudent && (
+                        <Paper elevation={3} sx={progressTabStyle}>
+                            <Typography>სახელი: {selectedStudent.firstName}</Typography>
+                            <Typography>გვარი: {selectedStudent.lastName}</Typography>
+                            <Typography>პირადი ნომერი: {selectedStudent.personalId}</Typography>
+                            <StudentProgress stepsInfo={testProgress} />
+                        </Paper>
+                    )}
                 </Dialog>
             </Container>
         </Box>
-        
     );
 }

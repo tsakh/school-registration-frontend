@@ -8,16 +8,18 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-const AdminSideMenu = () => {
+const AdminSideMenu = ({ onHover }) => {
     const [hover, setHover] = useState(false);
     const navigate = useNavigate();
 
     const handleMouseEnter = () => {
         setHover(true);
+        onHover(true);
     };
 
     const handleMouseLeave = () => {
         setHover(false);
+        onHover(false);
     };
 
     const handleNavigation = (path) => {
@@ -38,7 +40,7 @@ const AdminSideMenu = () => {
                 left: 0,
                 top: 0,
                 height: '100vh',
-                width: hover ? 200 : 60,
+                width: hover ? '20vw' : '5vw', 
                 backgroundColor: 'white',
                 transition: 'width 0.3s',
                 color: 'black',
@@ -48,7 +50,7 @@ const AdminSideMenu = () => {
                 justifyContent: 'space-between',
                 padding: 2,
                 boxShadow: 3,
-                overflow: 'hidden', 
+                overflow: 'hidden',
             }}
         >
             <Box sx={{ textAlign: 'center', mt: 2 }}>
@@ -78,17 +80,6 @@ const AdminSideMenu = () => {
                         onClick={() => handleNavigation('/add')}
                     >
                         {hover && 'Add'}
-                    </Button>
-                </Box>
-                <Box sx={{ width: '100%', mb: 2 }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        startIcon={<HowToRegIcon />}
-                        sx={{ display: 'flex', justifyContent: hover ? 'flex-start' : 'center', width: '100%' }}
-                        onClick={() => handleNavigation('/register')}
-                    >
-                        {hover && 'Register'}
                     </Button>
                 </Box>
                 <Box sx={{ width: '100%', mb: 2 }}>
