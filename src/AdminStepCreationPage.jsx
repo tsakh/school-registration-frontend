@@ -11,6 +11,7 @@ const AdminStepCreationPage = ({ stepsData }) => {
     const [cards, setCards] = useState(stepsData); 
     const [editMode, setEditMode] = useState(false); 
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [menuHover, setMenuHover] = useState(false);
 
     const handleAddCard = () => {
         const newCard = {
@@ -43,8 +44,16 @@ const AdminStepCreationPage = ({ stepsData }) => {
     };
 
     return (
-            <Box>
-                <AdminSideMenu />
+        <Box sx={{ display: 'flex' }}>
+            <AdminSideMenu onHover={setMenuHover} />
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    ml: menuHover ? '20vw' : '5vw', 
+                    transition: 'margin-left 0.3s',
+                    padding: 2,
+                }}
+            >
                 <Box mb={2} textAlign='center'>
                     <Button
                         variant="contained"
@@ -118,6 +127,7 @@ const AdminStepCreationPage = ({ stepsData }) => {
                     </DialogActions>
                 </Dialog>
             </Box>
+        </Box>
     );
 };
 
