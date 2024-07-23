@@ -107,7 +107,7 @@ export default function SignInForm(){
                       type="submit"
                       variant="contained"  
                     >
-                      შესვლა
+                       {t('ButtonLabel')}
                     </Button>
                     <Box mt={2}>
                       <Box display="flex" justifyContent="space-between" width="80%">
