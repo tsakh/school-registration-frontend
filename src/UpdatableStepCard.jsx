@@ -20,9 +20,9 @@ import {
     ListItem
 } from '@mui/material';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import CloseIcon from '@mui/icons-material/Close';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -79,6 +79,16 @@ export default function UpdatableStepCard(props) {
 
     const handleAddTempCalendarEvent = () => {
         setTempCalendar([...tempCalendar, new Date()]);
+    };
+
+    const handleDeleteEvent = (index) => {
+        const newCalendar = calendar.filter((_, i) => i !== index);
+        setCalendar(newCalendar);
+    };
+
+    const handleDeleteTempEvent = (index) => {
+        const newTempCalendar = tempCalendar.filter((_, i) => i !== index);
+        setTempCalendar(newTempCalendar);
     };
 
     return (
@@ -151,6 +161,9 @@ export default function UpdatableStepCard(props) {
                                             minimumDate={moment().toDate()}
                                         />
                                     </div>
+                                    <IconButton onClick={() => handleDeleteTempEvent(index)}>
+                                        <CloseIcon />
+                                    </IconButton>
                                 </ListItem>
                             ))}
                             <ListItem>
