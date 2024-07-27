@@ -7,7 +7,10 @@ import { I18nextProvider}  from 'react-i18next';
 import translations_geo from './locales/translations/geo/translations.json'
 import translations_en from './locales/translations/en/translations.json'
 import UpdatableStepsGrid from './UpdatableStepsGrid';
-
+import { BrowserRouter as Router, Route, Routes, Redirect } from 'react-router-dom';
+import SignInForm from './SignInForm'
+import SignUpForm from './SignUpForm'
+import ManagementPage from './ManagementPage';
 
 
 
@@ -47,15 +50,35 @@ const logOut = () => {
 
 root.render(
   <React.StrictMode>
+    <Router>
+      <div style={{backgroundColor: '#3d92a6', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
+        <I18nextProvider i18n={i18next}>
+        <CssBaseline/>
+          <Routes>
 
-    <I18nextProvider i18n={i18next}>
-    <CssBaseline/>
-    <div style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
-        <div>
-            <UpdatableStepsGrid stepsData={stepsForUpdate} />
-        </div>
-    </div>
+            <Route exact path="/" element= {<SignInForm/>}>
+            </Route>
 
- </I18nextProvider>
+            <Route path='/update' element={<UpdatableStepsGrid stepsData={stepsForUpdate} />}>
+            </Route>
+
+            <Route path='/add' element={<AdminStepCreationPage stepsData={steps}/>}>
+            </Route>
+
+            <Route exact path="/register" element= {<SignUpForm/>}>
+            </Route>
+
+            <Route exact path="/management" element= {<ManagementPage/>}>
+            </Route>
+            
+
+          </Routes>
+        </I18nextProvider>
+      </div>
+    </Router>
+   
+    
+
+ 
   </React.StrictMode>
 );

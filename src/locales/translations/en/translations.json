@@ -22,7 +22,8 @@
         "Email" : "Email",
         "Password" : "Password",
         "ForgotPassword" : "Forgot your password?",
-        "Register" : "Register"
+        "Register" : "Register",
+        "ButtonLabel" : "Sign In"
     },
     "Questionnaire" : {
         "FormName" : "School Registration Questionnaire",

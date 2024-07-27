@@ -22,7 +22,8 @@
         "Email" : "მეილი",
         "Password" : "პაროლი",
         "ForgotPassword" : "დაგავიწყდა პაროლი?",
-        "Register" : "რეგისტრაცია"
+        "Register" : "რეგისტრაცია",
+        "ButtonLabel" : "შესვლა"
     },
     "Questionnaire" : {
         "FormName" : "სკოლაში რეგისტრაციის კითხვარი",
