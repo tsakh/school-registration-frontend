@@ -17,7 +17,8 @@ import {
     DialogContentText,
     DialogTitle,
     List,
-    ListItem
+    ListItem,
+    ListItemText
 } from '@mui/material';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import CloseIcon from '@mui/icons-material/Close';
@@ -118,7 +119,7 @@ export default function UpdatableStepCard(props) {
                         <List>
                             {calendar.map((event, index) => (
                                 <ListItem key={index}>
-                                    <Typography>{event ? event.toString() : 'Invalid date'}</Typography>
+                                    <ListItemText primary = {event ? moment(event).format('DD/MM/YYYY HH:mm') : 'Invalid date'}/>
                                 </ListItem>
                             ))}
                         </List>
