@@ -11,9 +11,11 @@ import { BrowserRouter as Router, Route, Routes, Redirect } from 'react-router-d
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import ManagementPage from './ManagementPage';
-
-
-
+import {AuthProvider} from './context/AuthProvider'
+import StepsGrid from './StepsGrid';
+import Questionnaire from './Questionnaire';
+import AuthChecker from './AuthChecker';
+import Unauthorized from './Unauthorized';
 
 i18next.init({
   interpolation :{escapeValue: false},
@@ -51,29 +53,65 @@ const logOut = () => {
 root.render(
   <React.StrictMode>
     <Router>
+
+  
       <div style={{backgroundColor: '#3d92a6', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
+
+  
         <I18nextProvider i18n={i18next}>
         <CssBaseline/>
+        
+
+        <AuthProvider>
           <Routes>
 
+            {/* public routes */}
             <Route exact path="/" element= {<SignInForm/>}>
-            </Route>
-
-            <Route path='/update' element={<UpdatableStepsGrid stepsData={stepsForUpdate} />}>
-            </Route>
-
-            <Route path='/add' element={<AdminStepCreationPage stepsData={steps}/>}>
             </Route>
 
             <Route exact path="/register" element= {<SignUpForm/>}>
             </Route>
 
-            <Route exact path="/management" element= {<ManagementPage/>}>
+            <Route exact path="/unauthorized" element= {<Unauthorized/>}>
             </Route>
+
+
+            {/* routes that are only accessible for admin */}
+
+            <Route element = {<AuthChecker accessRole={"admin"}/>}>
+
             
+                <Route path='/update' element={<UpdatableStepsGrid stepsData={stepsForUpdate} />}>
+                </Route>
+
+                <Route path='/add' element={<AdminStepCreationPage stepsData={steps}/>}>
+                </Route>
+
+                <Route exact path="/management" element= {<ManagementPage/>}>
+                </Route>
+
+            </Route>
+
+
+            {/* routes that are only accessible for parent */}
+
+            <Route element = {<AuthChecker accessRole={"parent"}/>}>
+
+                <Route path='/parentPage' element={<StepsGrid stepsData={steps}/>}>
+                </Route>
+
+                <Route path='/questionnaire' element={<Questionnaire/>}>
+                </Route>
+
+            </Route>
 
           </Routes>
+        
+          </AuthProvider>
+        
         </I18nextProvider>
+              
+      
       </div>
     </Router>
    
