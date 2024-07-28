@@ -17,12 +17,13 @@ import {
     DialogContentText,
     DialogTitle,
     List,
-    ListItem
+    ListItem,
+    ListItemText
 } from '@mui/material';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import CloseIcon from '@mui/icons-material/Close';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -81,6 +82,16 @@ export default function UpdatableStepCard(props) {
         setTempCalendar([...tempCalendar, new Date()]);
     };
 
+    const handleDeleteEvent = (index) => {
+        const newCalendar = calendar.filter((_, i) => i !== index);
+        setCalendar(newCalendar);
+    };
+
+    const handleDeleteTempEvent = (index) => {
+        const newTempCalendar = tempCalendar.filter((_, i) => i !== index);
+        setTempCalendar(newTempCalendar);
+    };
+
     return (
         <Card sx={{ width: '20vw' }}>
             <CardContent>
@@ -108,7 +119,7 @@ export default function UpdatableStepCard(props) {
                         <List>
                             {calendar.map((event, index) => (
                                 <ListItem key={index}>
-                                    <Typography>{event ? event.toString() : 'Invalid date'}</Typography>
+                                    <ListItemText primary = {event ? moment(event).format('DD/MM/YYYY HH:mm') : 'Invalid date'}/>
                                 </ListItem>
                             ))}
                         </List>
@@ -151,6 +162,9 @@ export default function UpdatableStepCard(props) {
                                             minimumDate={moment().toDate()}
                                         />
                                     </div>
+                                    <IconButton onClick={() => handleDeleteTempEvent(index)}>
+                                        <CloseIcon />
+                                    </IconButton>
                                 </ListItem>
                             ))}
                             <ListItem>

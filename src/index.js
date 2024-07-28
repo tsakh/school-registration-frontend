@@ -53,9 +53,11 @@ const logOut = () => {
 root.render(
   <React.StrictMode>
     <Router>
-      <div style={{backgroundColor: '#5669f5', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
-        
-    
+
+  
+      <div style={{backgroundColor: '#3d92a6', height: '100vh', width: '100vw', minHeight: '100vh', minWidth: '100vw', margin: 0, padding: 0, overflow:'auto'}}>
+
+  
         <I18nextProvider i18n={i18next}>
         <CssBaseline/>
         

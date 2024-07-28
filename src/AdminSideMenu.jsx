@@ -8,16 +8,18 @@ import HowToRegIcon from '@mui/icons-material/HowToReg';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-const AdminSideMenu = () => {
+const AdminSideMenu = ({ onHover }) => {
     const [hover, setHover] = useState(false);
     const navigate = useNavigate();
 
     const handleMouseEnter = () => {
         setHover(true);
+        onHover(true);
     };
 
     const handleMouseLeave = () => {
         setHover(false);
+        onHover(false);
     };
 
     const handleNavigation = (path) => {
@@ -38,7 +40,7 @@ const AdminSideMenu = () => {
                 left: 0,
                 top: 0,
                 height: '100vh',
-                width: hover ? 200 : 60,
+                width: hover ? '20vw' : '5vw', 
                 backgroundColor: 'white',
                 transition: 'width 0.3s',
                 color: 'black',
@@ -48,6 +50,7 @@ const AdminSideMenu = () => {
                 justifyContent: 'space-between',
                 padding: 2,
                 boxShadow: 3,
+                overflow: 'hidden',
             }}
         >
             <Box sx={{ textAlign: 'center', mt: 2 }}>
@@ -56,53 +59,50 @@ const AdminSideMenu = () => {
                     Admin Info
                 </Typography>
             </Box>
-            <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<UpdateIcon />}
-                    sx={{ display: hover ? 'block' : 'none', mb: 2 }}
-                    onClick={() => handleNavigation('/update')}
-                >
-                    Update
-                </Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AddCircleIcon />}
-                    sx={{ display: hover ? 'block' : 'none', mb: 2 }}
-                    onClick={() => handleNavigation('/add')}
-                >
-                    Add
-                </Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<HowToRegIcon />}
-                    sx={{ display: hover ? 'block' : 'none', mb: 2 }}
-                    onClick={() => handleNavigation('/register')}
-                >
-                    Register
-                </Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<ManageAccountsIcon />}
-                    sx={{ display: hover ? 'block' : 'none', mb: 2 }}
-                    onClick={() => handleNavigation('/management')}
-                >
-                    Management
-                </Button>
+            <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4, width: '100%' }}>
+                <Box sx={{ width: '100%', mb: 2 }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<UpdateIcon />}
+                        sx={{ display: 'flex', justifyContent: hover ? 'flex-start' : 'center', width: '100%' }}
+                        onClick={() => handleNavigation('/update')}
+                    >
+                        {hover && 'Update'}
+                    </Button>
+                </Box>
+                <Box sx={{ width: '100%', mb: 2 }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<AddCircleIcon />}
+                        sx={{ display: 'flex', justifyContent: hover ? 'flex-start' : 'center', width: '100%' }}
+                        onClick={() => handleNavigation('/add')}
+                    >
+                        {hover && 'Add'}
+                    </Button>
+                </Box>
+                <Box sx={{ width: '100%', mb: 2 }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<ManageAccountsIcon />}
+                        sx={{ display: 'flex', justifyContent: hover ? 'flex-start' : 'center', width: '100%' }}
+                        onClick={() => handleNavigation('/management')}
+                    >
+                        {hover && 'Management'}
+                    </Button>
+                </Box>
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ width: '100%', mb: 2 }}>
                 <Button
                     variant="contained"
                     color="secondary"
                     startIcon={<LogoutIcon />}
-                    sx={{ display: hover ? 'block' : 'none' }}
+                    sx={{ display: 'flex', justifyContent: hover ? 'flex-start' : 'center', width: '100%' }}
                     onClick={handleLogout}
                 >
-                    Logout
+                    {hover && 'Logout'}
                 </Button>
             </Box>
         </Box>
