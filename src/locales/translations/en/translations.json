@@ -19,7 +19,7 @@
     },
     "SignInPage" : {
         "FormName" : "Login to the system",
-        "Email" : "Email",
+        "PersonalId" : "Personal ID",
         "Password" : "Password",
         "ForgotPassword" : "Forgot your password?",
         "Register" : "Register",

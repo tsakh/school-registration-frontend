@@ -19,7 +19,7 @@
     "SignInPage" : {
         
         "FormName" : "სისტემაში შესვლა",
-        "Email" : "მეილი",
+        "PersonalId" : "პირადი ნომერი",
         "Password" : "პაროლი",
         "ForgotPassword" : "დაგავიწყდა პაროლი?",
         "Register" : "რეგისტრაცია",
