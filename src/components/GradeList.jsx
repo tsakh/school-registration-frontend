@@ -1,5 +1,5 @@
 import * as React from 'react';
-import MockData from './MockData.json'
+import MockData from '../MockData.json'
 
 
 export default function GradeList({ onGradeListChanged }){

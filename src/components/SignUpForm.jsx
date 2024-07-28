@@ -5,7 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import LanguageIcon from '@mui/icons-material/Language';
-import { signUpPaperStyle, signUpIconStyle, signUpButtonStyle,signUpLangSwichStyle } from './styles';
+import { signUpPaperStyle, signUpIconStyle, signUpButtonStyle,signUpLangSwichStyle } from '../styles';
 import GradeList from './GradeList';
 import { useTranslation } from 'react-i18next';
 

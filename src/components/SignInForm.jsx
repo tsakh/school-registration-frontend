@@ -2,12 +2,12 @@ import { Paper, Avatar, Typography,Box,TextField, Button , Grid, Link
 ,Menu,MenuItem,ListItemIcon,ListItemText} from '@mui/material';
 import * as React from 'react';
 import SchoolIcon from '@mui/icons-material/School';
-import { signInPaperStyle, signInIconStyle, signInButtonStyle, signInLangSwichStyle } from './styles';
+import { signInPaperStyle, signInIconStyle, signInButtonStyle, signInLangSwichStyle } from '../styles';
 import { useTranslation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useNavigate } from 'react-router-dom';
 
-import useAuth from './customHooks/useAuth';
+import useAuth from '../customHooks/useAuth';
 export default function SignInForm(){
 
   const navigate = useNavigate();

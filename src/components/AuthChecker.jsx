@@ -1,5 +1,5 @@
 import {Outlet, Navigate} from "react-router-dom";
-import useAuth from "./customHooks/useAuth";
+import useAuth from "../customHooks/useAuth";
 
 export default function AuthChecker({accessRole}){
         

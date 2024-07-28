@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import {Card, CardContent, Typography, IconButton, CardActions, Collapse, Box } from '@mui/material'
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown'
-import { stepStyles, getColor } from './styles';
+import { stepStyles, getColor } from '../styles';
 import Calendar from './Calendar';
 
 const ExpandMore = styled((props) => {

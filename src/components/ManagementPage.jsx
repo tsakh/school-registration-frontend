@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar";
 import StudentsList from "./StudentsGrid";
 import { Container, Dialog, Typography, Paper, Box } from '@mui/material';
 import StudentProgress from './StudentProgress';
-import { managementPageStyle, progressTabStyle } from './styles';
+import { managementPageStyle, progressTabStyle } from '../styles';
 import AdminSideMenu from './AdminSideMenu';
 
 //should be removed

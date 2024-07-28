@@ -1,5 +1,5 @@
 import { TextField, InputAdornment } from "@mui/material"
-import { searchBarStyle } from "./styles"
+import { searchBarStyle } from "../styles"
 import { AccountCircle } from "@mui/icons-material"
 export default function SearchBar({ onSearchChange }) {
 

@@ -1,21 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { CssBaseline } from '@mui/material';
-import AdminStepCreationPage from './AdminStepCreationPage';
+import AdminStepCreationPage from './components/AdminStepCreationPage';
 import i18next from 'i18next';
 import { I18nextProvider}  from 'react-i18next';
 import translations_geo from './locales/translations/geo/translations.json'
 import translations_en from './locales/translations/en/translations.json'
-import UpdatableStepsGrid from './UpdatableStepsGrid';
+import UpdatableStepsGrid from './components/UpdatableStepsGrid';
 import { BrowserRouter as Router, Route, Routes, Redirect } from 'react-router-dom';
-import SignInForm from './SignInForm'
-import SignUpForm from './SignUpForm'
-import ManagementPage from './ManagementPage';
+import SignInForm from './components/SignInForm'
+import SignUpForm from './components/SignUpForm'
+import ManagementPage from './components/ManagementPage';
 import {AuthProvider} from './context/AuthProvider'
-import StepsGrid from './StepsGrid';
-import Questionnaire from './Questionnaire';
-import AuthChecker from './AuthChecker';
-import Unauthorized from './Unauthorized';
+import StepsGrid from './components/StepsGrid';
+import Questionnaire from './components/Questionnaire';
+import AuthChecker from './components/AuthChecker';
+import Unauthorized from './components/Unauthorized';
 
 i18next.init({
   interpolation :{escapeValue: false},

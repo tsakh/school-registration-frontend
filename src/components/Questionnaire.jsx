@@ -3,7 +3,7 @@ import { Box,Menu,Container, Grid, Avatar, FormControl, InputLabel, Select, Menu
 import { MuiTelInput } from 'mui-tel-input';
 import SchoolDataExtractor from './SchoolList';
 import SourceList from './SourceList';
-import {  questionnaireAvatar, questionnairePageStyle, selectBoxStyle,questionnareButton, questionnaireLangSwitch } from './styles';
+import {  questionnaireAvatar, questionnairePageStyle, selectBoxStyle,questionnareButton, questionnaireLangSwitch } from '../styles';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import { useTranslation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
