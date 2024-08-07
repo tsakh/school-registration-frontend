@@ -6,12 +6,13 @@ import { useTranslation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../customHooks/useAuth';
+import {signIn} from '../services/api';
 
 export default function SignInForm() {
   const navigate = useNavigate();
   const { t: tCommon } = useTranslation('translation', { keyPrefix: 'Common' });
   const { t, i18n } = useTranslation('translation', { keyPrefix: 'SignInPage' });
-  const { auth, setAuth } = useAuth();
+  const { auth, login } = useAuth();
   const [language, setLanguage] = React.useState(null);
 
   const handleOpenMenu = (event) => {
@@ -27,16 +28,25 @@ export default function SignInForm() {
     handleCloseMenu();
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get('email');
+    const personalId = data.get('personalId');
     const password = data.get('password');
-    console.log('Entered email:', email);
-    console.log('Entered password:', password);
-    console.log('Before setAuth:', auth);
-    setAuth({ role: 'admin' });
-    navigate('/add');
+
+    try {
+      const response = await signIn({ personalId, password }); 
+      login(response.data.token);
+      const roles = auth.roles;
+      if(roles.includes('ADMIN')){
+          navigate('/update');
+      }else if (roles.includes('USER')){
+          navigate('/parentPage');
+
+      } 
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
 
   return (
@@ -85,9 +95,9 @@ export default function SignInForm() {
               margin="normal"
               required
               style={{ width: '80%' }}
-              id="email"
+              id="personalId"
               label={t('PersonalId')}
-              name="email"
+              name="personalId"
               autoFocus
             />
             <TextField
