@@ -78,7 +78,7 @@ root.render(
 
             {/* routes that are only accessible for admin */}
 
-            <Route element = {<AuthChecker accessRole={"admin"}/>}>
+            <Route element = {<AuthChecker accessRole={"ADMIN"}/>}>
 
             
                 <Route path='/update' element={<UpdatableStepsGrid stepsData={stepsForUpdate} />}>
@@ -95,7 +95,7 @@ root.render(
 
             {/* routes that are only accessible for parent */}
 
-            <Route element = {<AuthChecker accessRole={"parent"}/>}>
+            <Route element = {<AuthChecker accessRole={"USER"}/>}>
 
                 <Route path='/parentPage' element={<StepsGrid stepsData={steps}/>}>
                 </Route>
