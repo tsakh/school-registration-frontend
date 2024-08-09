@@ -38,9 +38,9 @@ export default function SignInForm() {
       const response = await signIn({ personalId, password }); 
       login(response.data.token);
       const roles = auth.roles;
-      if(roles.includes('ADMIN')){
+      if(roles.includes('ROLE_ADMIN')){
           navigate('/update');
-      }else if (roles.includes('USER')){
+      }else if (roles.includes('ROLE_USER')){
           navigate('/parentPage');
 
       } 
