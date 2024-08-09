@@ -1,17 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Box, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import StepForAdmin from './StepForAdmin';
 import AdminSideMenu from './AdminSideMenu';
+import {getSteps} from '../services/api';
 
 const AdminStepCreationPage = ({ stepsData }) => {
     const [stepName, setStepName] = useState('');
     const [additionalInfo, setAdditionalInfo] = useState('');
     const [isCalendarEvent, setIsCalendarEvent] = useState(false);
-    const [cards, setCards] = useState(stepsData); 
+    //const [cards, setCards] = useState(stepsData); 
     const [editMode, setEditMode] = useState(false); 
     const [dialogOpen, setDialogOpen] = useState(false);
     const [menuHover, setMenuHover] = useState(false);
+
+    const [cards, setCards] = useState([]);
+
+    useEffect(() => {
+        const fetchSteps = async () => {
+            try {
+                const response = await getSteps();
+                setCards(response.data); 
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
+        fetchSteps();
+    }, []);
 
     const handleAddCard = () => {
         const newCard = {
