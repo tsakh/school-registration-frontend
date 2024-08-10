@@ -36,3 +36,7 @@ export const getSteps = () => {
 export const getGrades = () => {
     return apiClient.get('user/questionnaire/grades');
 };
+
+export const getSchoolNames = () => {
+    return apiClient.get('user/questionnaire/school-names');
+};

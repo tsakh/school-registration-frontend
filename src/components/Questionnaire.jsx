@@ -7,7 +7,7 @@ import {  questionnaireAvatar, questionnairePageStyle, selectBoxStyle,questionna
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import { useTranslation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
-import { getGrades } from '../services/api';
+import { getGrades, getSchoolNames} from '../services/api';
 
 export default function Questionnaire() {
 
@@ -17,7 +17,7 @@ export default function Questionnaire() {
 
   const [language, setLanguage] = React.useState(null);
   const [grades, setGrades] = React.useState([]);
-
+  const [schools, setSchools] = React.useState([]);
   React.useEffect(() => {
     const loadGrades = async () => {
       try {
@@ -27,8 +27,19 @@ export default function Questionnaire() {
         console.log("error during getting grades");
       }
     };
-  
+
+    const loadSchoolNames = async () => {
+      try {
+        const response = await getSchoolNames();
+        setSchools(response.data);
+      } catch (error) {
+        console.log("error during getting school names");
+      }
+    };
+
+    
     loadGrades();
+    loadSchoolNames();
   }, []);
 
   
@@ -182,7 +193,7 @@ export default function Questionnaire() {
                 onChange={handleChange}
                 sx={selectBoxStyle}
               >
-                {options.map((option, index) => (
+                {schools.map((option, index) => (
                   <MenuItem key={index} value={option}>{option}</MenuItem>
                 ))}
               </Select>
