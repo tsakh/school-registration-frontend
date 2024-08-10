@@ -16,7 +16,7 @@ import StepsGrid from './components/StepsGrid';
 import Questionnaire from './components/Questionnaire';
 import AuthChecker from './components/AuthChecker';
 import Unauthorized from './components/Unauthorized';
-
+import RoleDirector from './components/RoleDirector';
 i18next.init({
   interpolation :{escapeValue: false},
   lng: "en",
@@ -66,7 +66,10 @@ root.render(
           <Routes>
 
             {/* public routes */}
-            <Route exact path="/" element= {<SignInForm/>}>
+            <Route exact path="/" element= {<RoleDirector/>}>
+            </Route>
+
+            <Route exact path="/login" element= {<SignInForm/>}>
             </Route>
 
             <Route exact path="/register" element= {<SignUpForm/>}>

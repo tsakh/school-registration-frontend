@@ -5,6 +5,7 @@ const AuthContext = React.createContext(null);
 
 export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = React.useState({ roles: [], personalId: null });
+    const [authFinished, setauthFinished] = React.useState(false);
 
     React.useEffect(() => {
         const prevToken = localStorage.getItem('jwt');
@@ -15,11 +16,11 @@ export const AuthProvider = ({ children }) => {
                 const personalId = decoded.sub || null;
                 setAuth({ roles, personalId });
             } catch (e) {
-                console.error('Invalid token:', e);
                 setAuth({ roles: [], personalId: null });
                 localStorage.removeItem('jwt'); 
             }
         }
+        setauthFinished(true);
     }, []);
 
     const login = (token) => {
@@ -40,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ auth, login, logout }}> 
+        <AuthContext.Provider value={{ auth, login, logout,authFinished }}> 
             {children}
         </AuthContext.Provider>
     );
