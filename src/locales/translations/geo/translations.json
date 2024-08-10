@@ -14,7 +14,11 @@
         "Grade": "სარეგისტრაციო კლასი",
         "Password": "პაროლი",
         "ButtonLabel" : "რეგისტრაცია",
-        "LinkToSignIn" : "გაქვთ ანგარიში? შესვლა"
+        "LinkToSignIn" : "გაქვთ ანგარიში? შესვლა",
+        "SuccessfullRegistration" : "რეგისტრაცია დასრულდა წარმატებით!",
+        "ErrorDuringRegistration" : "რეგისტრაცია წარუმატებელია, თავიდან სცადეთ!",
+        "PersonalIdAlreadyExists" : "პირადი ნომერი უკვე რეგისტრირებულია!"
+
 
     },
     "SignInPage" : {
