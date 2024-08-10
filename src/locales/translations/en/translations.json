@@ -11,7 +11,6 @@
         "ParentName": "Parent Name",
         "ParentSurname": "Parent Surname",
         "ParentEmail": "Parent Email",
-        "Grade": "Grade Applying For",
         "Password": "Password",
         "ButtonLabel" : "Register",
         "LinkToSignIn" : "Already have an account? Sign In",
@@ -40,7 +39,9 @@
         "SourceOfInfo" : "How did you get information about our school?",
         "SpecialNeeds" : "SEN Student",
         "SiblingsInSameSchool" : "Sibling(s) of a registered student attend this school",
-        "Submit" : "Submit"
+        "Submit" : "Submit",
+        "CurrentGrade" : "Current grade",
+        "GradeApplyingFor": "Grade applying for"
     }
     
 }

@@ -7,7 +7,7 @@ import {  questionnaireAvatar, questionnairePageStyle, selectBoxStyle,questionna
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import { useTranslation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
-
+import { getGrades } from '../services/api';
 
 export default function Questionnaire() {
 
@@ -15,8 +15,23 @@ export default function Questionnaire() {
 
   const { t , i18n} = useTranslation('translation', { keyPrefix: 'Questionnaire' });
 
-
   const [language, setLanguage] = React.useState(null);
+  const [grades, setGrades] = React.useState([]);
+
+  React.useEffect(() => {
+    const loadGrades = async () => {
+      try {
+        const response = await getGrades();
+        setGrades(response.data);
+      } catch (error) {
+        console.log("error during getting grades");
+      }
+    };
+  
+    loadGrades();
+  }, []);
+
+  
 
   const handleOpenMenu = (event) => {
       setLanguage(event.currentTarget);
@@ -36,7 +51,9 @@ export default function Questionnaire() {
     currentSchool: '',
     siblingsInSameSchool: false,
     specialNeeds: false,
-    informationAboutSchool: ''
+    informationAboutSchool: '',
+    selectedGrade: '',
+    currentGrade : ''
   });
 
   const [options, setOptions] = React.useState([]);
@@ -65,9 +82,10 @@ export default function Questionnaire() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(formData);
+
   };
 
   return (
@@ -122,6 +140,39 @@ export default function Questionnaire() {
               sx = {selectBoxStyle}
             />
           </Grid>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel>{t('CurrentGrade')}</InputLabel>
+              <Select
+                name="currentGrade"
+                value={formData.currentGrade}
+                onChange={handleChange}
+                sx={selectBoxStyle}
+              >
+                {grades.map((grade, index) => (
+                  <MenuItem key={index} value={grade}>{grade}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel>{t('GradeApplyingFor')}</InputLabel>
+              <Select
+                name="selectedGrade"
+                value={formData.selectedGrade}
+                onChange={handleChange}
+                sx={selectBoxStyle}
+              >
+                {grades.map((grade, index) => (
+                  <MenuItem key={index} value={grade}>{grade}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+
           <Grid item xs={12}>
             <FormControl fullWidth>
               <InputLabel>{t('CurrentSchool')}</InputLabel>

@@ -31,3 +31,8 @@ export const signUp = (signUpData) => {
 export const getSteps = () => {
     return apiClient.get('/admin/steps/get');
 };
+
+
+export const getGrades = () => {
+    return apiClient.get('user/questionnaire/grades');
+};
