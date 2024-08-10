@@ -205,7 +205,7 @@ export default function SignUpForm() {
             </Button>
             <Box mt={2}>
               <Box display="flex" justifyContent="space-between" width="80%">
-                <Link href="#" variant="body2">
+                <Link href="/login" variant="body2">
                 {t('LinkToSignIn')}
                 </Link>
               </Box>

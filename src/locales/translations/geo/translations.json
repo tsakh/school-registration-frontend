@@ -15,6 +15,7 @@
         "Password": "პაროლი",
         "ButtonLabel" : "რეგისტრაცია",
         "LinkToSignIn" : "გაქვთ ანგარიში? შესვლა"
+
     },
     "SignInPage" : {
         
@@ -23,7 +24,9 @@
         "Password" : "პაროლი",
         "ForgotPassword" : "დაგავიწყდა პაროლი?",
         "Register" : "რეგისტრაცია",
-        "ButtonLabel" : "შესვლა"
+        "ButtonLabel" : "შესვლა",
+        "StudentNotFound" : "სტუდენტი ვერ მოიძებნა, სცადეთ თავიდან!",
+        "ServiceProblem" : "სერვისის პრობლემა, სცადეთ თავიდან!"
     },
     "Questionnaire" : {
         "FormName" : "სკოლაში რეგისტრაციის კითხვარი",

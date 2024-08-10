@@ -137,3 +137,14 @@ export const questionnaireLangSwitch = {
     top : '0vh',
     right : '5vw'
 }
+
+export const messageBoxButtonStyle = {
+    display: 'flex',
+    justifyContent : 'center',
+    width : '100vw'
+}
+
+export const messageBoxTextStyle = {
+    display: 'flex',
+    justifyContent : 'center'
+}
