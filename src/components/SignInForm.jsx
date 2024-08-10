@@ -33,14 +33,16 @@ export default function SignInForm() {
     const data = new FormData(event.currentTarget);
     const personalId = data.get('personalId');
     const password = data.get('password');
-
+    console.log("here")
     try {
       const response = await signIn({ personalId, password }); 
       login(response.data.token);
       const roles = auth.roles;
       if(roles.includes('ROLE_ADMIN')){
+          console.log('in admin')
           navigate('/update');
       }else if (roles.includes('ROLE_USER')){
+          console.log('in parent')
           navigate('/parentPage');
 
       } 
@@ -118,10 +120,8 @@ export default function SignInForm() {
             </Button>
             <Box mt={2}>
               <Box display="flex" justifyContent="space-between" width="80%">
-                <Link href="#" variant="body2">
-                  {t('ForgotPassword')}
-                </Link>
-                <Link href="#" variant="body2">
+                
+                <Link href="/register" variant="body2">
                   {t('Register')}
                 </Link>
               </Box>
