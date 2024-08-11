@@ -6,55 +6,51 @@ import { Container, Dialog, Typography, Paper, Box } from '@mui/material';
 import StudentProgress from './StudentProgress';
 import { managementPageStyle, progressTabStyle } from '../styles';
 import AdminSideMenu from './AdminSideMenu';
+import {getStudentsList} from '../services/api';
+import {getStudentSteps} from '../services/api.js'
 
-//should be removed
 
-const testStudents = [
-    { id: 1, firstName: 'გიორგი', lastName: 'აბაშიძე', personalId: '01020304050' },
-    { id: 2, firstName: 'ალექსანდრე', lastName: 'კვარაცხელია', personalId: '06070809010' },
-    { id: 3, firstName: 'ნინო', lastName: 'ჩიხვაძე', personalId: '11121314151' },
-    { id: 4, firstName: 'თამაზ', lastName: 'სულხანიძე', personalId: '16171819202' },
-    { id: 5, firstName: 'ლევან', lastName: 'გოგოლაშვილი', personalId: '21222324253' },
-    { id: 6, firstName: 'ნინა', lastName: 'მახარაძე', personalId: '26272829303' },
-    { id: 7, firstName: 'ლევანი', lastName: 'ლაღუნიძე', personalId: '31323334354' },
-    { id: 8, firstName: 'ნათია', lastName: 'დავითაშვილი', personalId: '36373839404' },
-    { id: 9, firstName: 'მარიამ', lastName: 'ლომსაძე', personalId: '41424344455' },
-    { id: 10, firstName: 'ლალი', lastName: 'გიორგაძე', personalId: '45464748495' },
-    { id: 11, firstName: 'მიხეილ', lastName: 'ბაბუხიძე', personalId: '50515253505' },
-    { id: 12, firstName: 'სოფიო', lastName: 'ჯირაშვილი', personalId: '55565758505' },
-    { id: 13, firstName: 'იასმინ', lastName: 'ლელაძე', personalId: '60616263656' },
-    { id: 14, firstName: 'დავით', lastName: 'გულაშვილი', personalId: '65666768605' },
-    { id: 15, firstName: 'ნიკოლოზ', lastName: 'გვარდაძე', personalId: '70717273705' },
-    { id: 16, firstName: 'ნატალი', lastName: 'აბრამიშვილი', personalId: '75767778705' },
-    { id: 17, firstName: 'თეა', lastName: 'არაბიძე', personalId: '80818283805' },
-    { id: 18, firstName: 'გიორგი', lastName: 'მელიქიშვილი', personalId: '85868788805' },
-    { id: 19, firstName: 'ანნა', lastName: 'მარღველაშვილი', personalId: '90919293905' },
-    { id: 20, firstName: 'მარიამ', lastName: 'ჩირაქაძე', personalId: '95969798905' },
-];
-
-const testProgress = [
-    { id: 1, name: "Step 1", isPassed: true },
-    { id: 2, name: "Step 2", isPassed: false },
-    { id: 3, name: "Step 3", isPassed: true },
-    { id: 4, name: "Step 4", isPassed: false },
-    { id: 5, name: "Step 5", isPassed: true }
-];
 
 export default function ManagementPage() {
-    const [students, setStudents] = useState([...testStudents]);
+    const [students, setStudents] = useState([]);
+    const [filteredStudents, setFilteredStudents] = useState([]);
     const [selectedStudent, setSelectedStudent] = useState(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [menuHover, setMenuHover] = useState(false);
+    const [studentProgress, setStudentProgress] = useState([]);
+    React.useEffect(() => {
+        const fetchSteps = async () => {
+            try {
+                const response = await getStudentsList();
+                setStudents(response.data);
+                setFilteredStudents(response.data); //filling both arrays
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
+        fetchSteps();
+    }, []);
+
 
     const handleSearchChange = (event) => {
         const query = event.target.value.trim();
-        const filteredStudents = testStudents.filter(currStudent => currStudent.personalId.includes(query));
-        setStudents(query === '' ? testStudents : filteredStudents);
+        const filteredStudents = students.filter(currStudent => currStudent.personalId.includes(query));
+        setFilteredStudents(query === '' ? students : filteredStudents);
     };
 
-    const handleRowClick = (student) => {
+    const handleRowClick = async (student) => {
         setSelectedStudent(student);
-        setIsDialogOpen(true);
+        try {
+            const response = await getStudentSteps(student.personalId);
+            setStudentProgress(response.data); 
+            console.log(response.data);
+            setIsDialogOpen(true);
+        } catch (error) {
+            console.error('Error fetching steps data:', error);
+        }
+       
+       
     };
 
     const handleCloseDialog = () => {
@@ -66,7 +62,7 @@ export default function ManagementPage() {
             <AdminSideMenu onHover={setMenuHover} />
             <Container sx={{ ...managementPageStyle, ml: menuHover ? '20vw' : '5vw', transition: 'margin-left 0.3s' }}>
                 <SearchBar onSearchChange={handleSearchChange} />
-                <StudentsList students={students} onRowClick={handleRowClick} />
+                <StudentsList students={filteredStudents} onRowClick={handleRowClick} />
 
                 <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
                     {selectedStudent && (
@@ -74,7 +70,7 @@ export default function ManagementPage() {
                             <Typography>სახელი: {selectedStudent.firstName}</Typography>
                             <Typography>გვარი: {selectedStudent.lastName}</Typography>
                             <Typography>პირადი ნომერი: {selectedStudent.personalId}</Typography>
-                            <StudentProgress stepsInfo={testProgress} />
+                            <StudentProgress stepsInfo={studentProgress} personalId = {selectedStudent.personalId} />
                         </Paper>
                     )}
                 </Dialog>

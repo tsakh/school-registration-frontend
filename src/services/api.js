@@ -31,3 +31,20 @@ export const signUp = (signUpData) => {
 export const getSteps = () => {
     return apiClient.get('/admin/steps/get');
 };
+
+export const getStudentsList = () => {
+    return apiClient.get('admin/management/user-information');
+};
+
+export const getStudentSteps = (personalId) => {
+    return apiClient.get('admin/management/user-steps' , {params : {personalId : personalId}});
+};
+
+export const modifyUserStep = (personalId, stepInfomation) => {
+    const stepInfomationArray = Array.isArray(stepInfomation)
+        ? stepInfomation
+        : [stepInfomation];
+    console.log(personalId,stepInfomationArray )
+    return apiClient.post('admin/management/user-steps' ,stepInfomationArray, {params : {personalId : personalId}});
+
+}
