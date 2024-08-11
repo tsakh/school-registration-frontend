@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Box,Menu,Container, Grid, Avatar, FormControl, InputLabel, Select, MenuItem, Button, Typography, FormControlLabel, Checkbox,ListItemText,ListItemIcon } from '@mui/material';
 import { MuiTelInput } from 'mui-tel-input';
-import SchoolDataExtractor from './SchoolList';
-import SourceList from './SourceList';
 import {  questionnaireAvatar, questionnairePageStyle, selectBoxStyle,questionnareButton, questionnaireLangSwitch } from '../styles';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import { useTranslation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
-
+import { getGrades, getSchoolNames,getPossibleAnswers} from '../services/api';
+import { jwtDecode } from 'jwt-decode'; 
+import {saveQuestionnaireResponse} from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 export default function Questionnaire() {
 
@@ -15,8 +16,49 @@ export default function Questionnaire() {
 
   const { t , i18n} = useTranslation('translation', { keyPrefix: 'Questionnaire' });
 
-
   const [language, setLanguage] = React.useState(null);
+  const [grades, setGrades] = React.useState([]);
+  const [schools, setSchools] = React.useState([]);
+  const [possibleAnswers, setPossibleAnswers] = React.useState([]);
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const loadGrades = async () => {
+      try {
+        const response = await getGrades();
+        setGrades(response.data);
+      } catch (error) {
+        console.log("error during getting grades");
+      }
+    };
+
+    const loadSchoolNames = async () => {
+      try {
+        const response = await getSchoolNames();
+        setSchools(response.data);
+      } catch (error) {
+        console.log("error during getting school names");
+      }
+    };
+
+    const lang = i18n.language.includes('geo') ? 'GE' : 'ENG';
+    const loadPossibleAnswersForInfo = async () => {
+      try {
+        const response = await getPossibleAnswers(lang);
+        setPossibleAnswers(response.data);
+      } catch (error) {
+        console.log("error during getting possible answers for school info");
+      }
+    };
+
+
+    
+    loadGrades();
+    loadSchoolNames();
+    loadPossibleAnswersForInfo();
+  }, []);
+
+  
 
   const handleOpenMenu = (event) => {
       setLanguage(event.currentTarget);
@@ -35,26 +77,17 @@ export default function Questionnaire() {
     phoneNumber: null,
     currentSchool: '',
     siblingsInSameSchool: false,
-    specialNeeds: false,
-    informationAboutSchool: ''
+    isSENStudent: false,
+    schoolInformationId: '',
+    gradeApplyingFor: '',
+    currentGrade : ''
   });
-
-  const [options, setOptions] = React.useState([]);
-  const [sourceOfInformation, setSourceOfInformation] = React.useState([]);
-
-  const handleDataExtracted = (data) => {
-    setOptions(data);
-  };
-
-  const handleSourceChanged = (data) => {
-    setSourceOfInformation(data);
-  };
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: name === 'schoolInformationId' ? String(value) : (type === 'checkbox' ? checked : value),
     });
   };
 
@@ -65,9 +98,24 @@ export default function Questionnaire() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+    try{
+      const token = localStorage.getItem('jwt');
+     
+      if(token){
+         const personalId = jwtDecode(token)?.sub;
+         if(personalId != null){
+            const response = await saveQuestionnaireResponse(personalId,formData);
+            navigate('/parentPage');
+            console.log(response); 
+         }
+      }
+    
+    } catch (error){
+          alert('try again!')
+    }
+   
   };
 
   return (
@@ -124,6 +172,39 @@ export default function Questionnaire() {
           </Grid>
           <Grid item xs={12}>
             <FormControl fullWidth>
+              <InputLabel>{t('CurrentGrade')}</InputLabel>
+              <Select
+                name="currentGrade"
+                value={formData.currentGrade}
+                onChange={handleChange}
+                sx={selectBoxStyle}
+              >
+                {grades.map((grade, index) => (
+                  <MenuItem key={index} value={grade}>{grade}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel>{t('GradeApplyingFor')}</InputLabel>
+              <Select
+                name="gradeApplyingFor"
+                value={formData.gradeApplyingFor}
+                onChange={handleChange}
+                sx={selectBoxStyle}
+              >
+                {grades.map((grade, index) => (
+                  <MenuItem key={index} value={grade}>{grade}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+
+          <Grid item xs={12}>
+            <FormControl fullWidth>
               <InputLabel>{t('CurrentSchool')}</InputLabel>
               <Select
                 name="currentSchool"
@@ -131,7 +212,7 @@ export default function Questionnaire() {
                 onChange={handleChange}
                 sx={selectBoxStyle}
               >
-                {options.map((option, index) => (
+                {schools.map((option, index) => (
                   <MenuItem key={index} value={option}>{option}</MenuItem>
                 ))}
               </Select>
@@ -141,13 +222,13 @@ export default function Questionnaire() {
             <FormControl fullWidth>
               <InputLabel>{t('SourceOfInfo')}</InputLabel>
               <Select
-                name="informationAboutSchool"
-                value={formData.informationAboutSchool}
+                name="schoolInformationId"
+                value={formData.schoolInformationId}
                 onChange={handleChange}
                 sx={selectBoxStyle}
               >
-                {sourceOfInformation.map((option, index) => (
-                  <MenuItem key={index} value={option}>{option}</MenuItem>
+                {possibleAnswers.map((option) => (
+                  <MenuItem key={option.possibleAnswerId} value={option.possibleAnswerId}>{option.probableAnswerDescr}</MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -169,9 +250,9 @@ export default function Questionnaire() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={formData.specialNeeds}
+                  checked={formData.isSENStudent}
                   onChange={handleChange}
-                  name="specialNeeds"
+                  name="isSENStudent"
                   color="primary"
                 />
               }
@@ -185,8 +266,6 @@ export default function Questionnaire() {
           </Grid>
         </Grid>
       </form>
-      <SchoolDataExtractor onDataExtracted={handleDataExtracted} />
-      <SourceList onSourceChanged={handleSourceChanged} />
     </Container>
   );
 }

@@ -28,6 +28,24 @@ export const signUp = (signUpData) => {
     return apiClient.post('/auth/sign-up', signUpData);
 };
 
+export const saveQuestionnaireResponse = (personalId, answersData) => {
+    console.log(personalId, JSON.stringify(answersData));
+    return apiClient.post('user/questionnaire',answersData, {params : {personalId : personalId}});
+};
+
 export const getSteps = () => {
     return apiClient.get('/admin/steps/get');
 };
+
+
+export const getGrades = () => {
+    return apiClient.get('user/questionnaire/grades');
+};
+
+export const getSchoolNames = () => {
+    return apiClient.get('user/questionnaire/school-names');
+};
+
+export const getPossibleAnswers = (lang) => {
+    return apiClient.get('user/questionnaire/possible-answers',{params : {language : lang}});
+}
