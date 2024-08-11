@@ -14,7 +14,9 @@ export const AuthProvider = ({ children }) => {
                 const decoded = jwtDecode(prevToken);
                 const roles = decoded.roles || [];
                 const personalId = decoded.sub || null;
-                setAuth({ roles, personalId });
+                const questionnareCompleted = decoded.isQuestionnaireCompleted || false;
+
+                setAuth({ roles, personalId,questionnareCompleted });
             } catch (e) {
                 setAuth({ roles: [], personalId: null });
                 localStorage.removeItem('jwt'); 
