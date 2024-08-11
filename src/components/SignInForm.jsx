@@ -8,6 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../customHooks/useAuth';
 import {signIn} from '../services/api';
 import MessageBox from './MessageBox';
+import { jwtDecode } from 'jwt-decode'; 
+
+
 export default function SignInForm() {
   const navigate = useNavigate();
   const { t: tCommon } = useTranslation('translation', { keyPrefix: 'Common' });
@@ -42,12 +45,14 @@ export default function SignInForm() {
     try {
       const response = await signIn({ personalId, password }); 
       login(response.data.token);
-      const roles = auth.roles;
+      const token = jwtDecode(response.data.token);
+      const roles = token.roles;
+      const questionnaireCompleted= token.isQuestionnaireCompleted;
     
       if(roles.includes('ROLE_ADMIN')){
           navigate('/update');
       }else if (roles.includes('ROLE_USER')){
-          if(auth.questionnaireCompleted) {
+          if(questionnaireCompleted) {
               navigate('/parentPage');
           } else {
               navigate('/questionnaire');

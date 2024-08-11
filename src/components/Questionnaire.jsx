@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Box,Menu,Container, Grid, Avatar, FormControl, InputLabel, Select, MenuItem, Button, Typography, FormControlLabel, Checkbox,ListItemText,ListItemIcon } from '@mui/material';
 import { MuiTelInput } from 'mui-tel-input';
-import SchoolDataExtractor from './SchoolList';
-import SourceList from './SourceList';
 import {  questionnaireAvatar, questionnairePageStyle, selectBoxStyle,questionnareButton, questionnaireLangSwitch } from '../styles';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +8,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import { getGrades, getSchoolNames,getPossibleAnswers} from '../services/api';
 import { jwtDecode } from 'jwt-decode'; 
 import {saveQuestionnaireResponse} from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 export default function Questionnaire() {
 
@@ -21,6 +20,8 @@ export default function Questionnaire() {
   const [grades, setGrades] = React.useState([]);
   const [schools, setSchools] = React.useState([]);
   const [possibleAnswers, setPossibleAnswers] = React.useState([]);
+  const navigate = useNavigate();
+
   React.useEffect(() => {
     const loadGrades = async () => {
       try {
@@ -106,6 +107,7 @@ export default function Questionnaire() {
          const personalId = jwtDecode(token)?.sub;
          if(personalId != null){
             const response = await saveQuestionnaireResponse(personalId,formData);
+            navigate('/parentPage');
             console.log(response); 
          }
       }
