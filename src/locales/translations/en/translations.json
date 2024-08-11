@@ -14,7 +14,11 @@
         "Grade": "Grade Applying For",
         "Password": "Password",
         "ButtonLabel" : "Register",
-        "LinkToSignIn" : "Already have an account? Sign In"
+        "LinkToSignIn" : "Already have an account? Sign In",
+        "SuccessfullRegistration" : "Registration completed successfully!",
+        "ErrorDuringRegistration" : "Error during registration, try again!",
+        "PersonalIdAlreadyExists" : "Student with this personal id is already registered!"
+
       
 
        

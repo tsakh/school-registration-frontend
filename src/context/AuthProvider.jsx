@@ -4,7 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 const AuthContext = React.createContext(null); 
 
 export const AuthProvider = ({ children }) => {
-    const [auth, setAuth] = React.useState({ roles: [], personalId: null });
+    const [auth, setAuth] = React.useState({ roles: [], personalId: null, questionnareCompleted :false });
     const [authFinished, setauthFinished] = React.useState(false);
 
     React.useEffect(() => {
@@ -28,7 +28,8 @@ export const AuthProvider = ({ children }) => {
             const decoded = jwtDecode(token);
             const roles = decoded.roles || [];
             const personalId = decoded.sub || null;
-            setAuth({ roles, personalId });
+            const questionnareCompleted = decoded.isQuestionnaireCompleted || false;
+            setAuth({ roles, personalId,questionnareCompleted });
             localStorage.setItem('jwt', token);
         } catch (e) {
             console.error('Failed to decode token:', e);

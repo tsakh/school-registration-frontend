@@ -6,18 +6,20 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import LanguageIcon from '@mui/icons-material/Language';
 import { signUpPaperStyle, signUpIconStyle, signUpButtonStyle,signUpLangSwichStyle } from '../styles';
-import GradeList from './GradeList';
 import { useTranslation } from 'react-i18next';
-
+import {signUp} from '../services/api';
+import MessageBox from './MessageBox';
 
 export default function SignUpForm() {
 
   const {t : tCommon} =  useTranslation('translation', { keyPrefix: 'Common' });
 
   const { t , i18n} = useTranslation('translation', { keyPrefix: 'SignUpPage' });
-
+  const formRef = React.useRef(null);
 
   const [language, setLanguage] = React.useState(null);
+  const [messageBoxOpen, setMessageBoxOpen] = React.useState(false);
+  const [messageBoxMessage, setMessageBoxMessage] = React.useState();
 
   const handleOpenMenu = (event) => {
       setLanguage(event.currentTarget);
@@ -32,30 +34,52 @@ export default function SignUpForm() {
     handleCloseMenu(); 
 };
 
-  const [grades, setGrades] = React.useState([]);
-  const [grade, setGrade] = React.useState('');
+  const handleMessageBoxClose = () => {
+    setMessageBoxOpen(false);
+  }
 
-  const handleGradeListChange = (data) => {
-    setGrades(data);
-  };
 
-  const handleChange = (event) => {
-    setGrade(event.target.value);
-  };
 
-  const handleSubmit = (event) => {
+  const handleSubmit =  async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      studFirstName: data.get('studentFirstName'),
-      studLastName: data.get('studentLastName'),
-      parentFirstName: data.get('parentFirstName'),
-      parentLastName: data.get('parentLastName'),
-      birthday: data.get('birthday'),
-      personalNumber : data.get('personalNumber')
-    });
+    const personalId = data.get('personalNumber');
+    const firstName = data.get('studentFirstName');
+    const lastName = data.get('studentLastName');
+    const email = data.get('email');
+    const password =  data.get('password');
+    const birthday = data.get('birthday');
+    const parentFirstname =  data.get('parentFirstName');
+    const parentLastname =  data.get('parentLastName');
+
+    
+    const [month, day, year] = birthday.split('/');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    try {
+      const response = await signUp({ personalId,
+                                      firstName,
+                                      lastName,
+                                      email,
+                                      password,
+                                      formattedDate,
+                                      parentFirstname,
+                                      parentLastname}); 
+  
+        setMessageBoxMessage(t('SuccessfullRegistration'));
+        formRef.current.reset();
+    } catch (error) {
+      if(error?.response?.status === 409){
+          
+        setMessageBoxMessage(t('PersonalIdAlreadyExists'));
+      } else {
+        setMessageBoxMessage(t('ErrorDuringRegistration'));
+      }
+        
+        
+    }
+
+    setMessageBoxOpen(true);
   };
 
   return (
@@ -102,7 +126,7 @@ export default function SignUpForm() {
             {t('FormName')}
           </Typography>
 
-          <Box component="form" onSubmit={handleSubmit} mt={3}>
+          <Box component="form" onSubmit={handleSubmit} mt={3} ref={formRef}>
             <Box display="flex" justifyContent="space-between" width="80%" margin="normal">
               <TextField
                 margin="normal"
@@ -171,22 +195,7 @@ export default function SignUpForm() {
               label={t('ParentEmail')}
               name="email"
             />
-            <FormControl style={{ width: '80%', marginTop: '16px' }} margin="normal" required>
-              <InputLabel id="grade-label">{t('Grade')}</InputLabel>
-              <Select
-                labelId="grade-label"
-                name="grade"
-                fullWidth
-                value={grade}
-                onChange={handleChange}
-              >
-                {grades.map((option, index) => (
-                  <MenuItem key={index} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            
             <TextField
               margin="normal"
               required
@@ -213,7 +222,9 @@ export default function SignUpForm() {
           </Box>
         </Grid>
       </Grid>
-      <GradeList onGradeListChanged={handleGradeListChange} />
+      <MessageBox open={messageBoxOpen} onClose={handleMessageBoxClose} message={messageBoxMessage} />
+
+     
     </Paper>
   );
 }

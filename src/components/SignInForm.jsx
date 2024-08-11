@@ -43,20 +43,24 @@ export default function SignInForm() {
       const response = await signIn({ personalId, password }); 
       login(response.data.token);
       const roles = auth.roles;
+    
       if(roles.includes('ROLE_ADMIN')){
-          console.log('in admin')
           navigate('/update');
       }else if (roles.includes('ROLE_USER')){
-          console.log('in parent')
-          navigate('/parentPage');
+          if(auth.questionnaireCompleted) {
+              navigate('/parentPage');
+          } else {
+              navigate('/questionnaire');
+          }
+          
 
       } 
     } catch (error) {
-        if(error?.response?.status === 404){
+        if(error?.response?.status === 409){
           
           setMessageBoxMessage(t('StudentNotFound'));
         } else {
-   
+  
           setMessageBoxMessage(t('ServiceProblem'));
         }
 
