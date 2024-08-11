@@ -29,7 +29,7 @@ export default function StepCard(props) {
     };
 
     return (
-        <Card sx={{ ...stepStyles, backgroundColor: getColor(obj.isPassed) }}  >
+        <Card sx={{ ...stepStyles, backgroundColor: getColor(obj.passed) }}  >
             <CardContent>
                 <Typography>
                     {obj.stepName}
@@ -38,7 +38,7 @@ export default function StepCard(props) {
 
             <CardActions>
                 {
-                    obj.additionalInfo != null  && obj.additionalInfo.length !== 0 &&
+                    obj.stepInfo != null  && obj.stepInfo.length !== 0 &&
                     (<ExpandMore
                         expand={expand}
                         onClick={handleExpandClick}
@@ -53,13 +53,13 @@ export default function StepCard(props) {
             <Collapse in={expand} timeout="auto" >
 
                 <Box sx={{ height: '20vh', overflow: 'auto' }}>
-                    { !obj.needsCalendar  ? (
+                    { !obj.calendarEvent  ? (
                         <Typography style={{overflowWra: 'break-word' }}>
             
-                            {obj.additionalInfo}
+                            {obj.stepInfo}
                         </Typography>
                     ) : (
-                        <Calendar options = {obj.additionalInfo} selectedDate = {obj.selected}/>
+                        <Calendar options = {obj.timeSlots} selectedDate = {obj.chosenTimeSlot}/>
                     )
                     }
                 </Box>
