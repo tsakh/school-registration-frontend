@@ -11,7 +11,6 @@
         "ParentName": "მშობლის სახელი",
         "ParentSurname": "მშობლის გვარი",
         "ParentEmail": "მეილი",
-        "Grade": "სარეგისტრაციო კლასი",
         "Password": "პაროლი",
         "ButtonLabel" : "რეგისტრაცია",
         "LinkToSignIn" : "გაქვთ ანგარიში? შესვლა",
@@ -39,6 +38,9 @@
         "SourceOfInfo" : "როგორ გაიგეთ ჩვენი სკოლის შესახებ?",
         "SpecialNeeds" : "სსსმ მოსწავლე",
         "SiblingsInSameSchool" : "რეგისტრირებულის და/ძმა ამ სკოლის მოსწავლეა",
-        "Submit" : "დადასტურება"
+        "Submit" : "დადასტურება",
+        "CurrentGrade" : "მოსწავლის მიმდინარე კლასი",
+        "GradeApplyingFor": "სარეგისტრაციო კლასი"
+
     }
 }

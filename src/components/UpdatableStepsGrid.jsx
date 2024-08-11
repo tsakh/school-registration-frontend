@@ -1,11 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Box, Grid } from '@mui/material';
 import UpdatableStepCard from './UpdatableStepCard';
 import AdminSideMenu from './AdminSideMenu';
 
-export default function UpdatableStepsGrid(props) {
-    const { stepsData, updateStepData } = props;
+export default function UpdatableStepsGrid() {
+    const [stepsData, setStepsData] = useState([]);
     const [menuHover, setMenuHover] = useState(false);
+
+    useEffect(() => {
+        const fetchStepsData = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/admin/steps', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`
+                    },
+                });
+                setStepsData(response.data); 
+            } catch (error) {
+                console.error('Error fetching steps data:', error);
+            }
+        };
+
+        fetchStepsData();
+    }, []);
+
+    const updateStepData = (index, updatedStep) => {
+        const updatedSteps = [...stepsData];
+        updatedSteps[index] = updatedStep;
+        setStepsData(updatedSteps);
+    };
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -13,7 +37,7 @@ export default function UpdatableStepsGrid(props) {
             <Box
                 sx={{
                     flexGrow: 1,
-                    ml: menuHover ? '20vw' : '5vw', 
+                    ml: menuHover ? '20vw' : '5vw',
                     transition: 'margin-left 0.3s',
                     padding: 2,
                 }}
