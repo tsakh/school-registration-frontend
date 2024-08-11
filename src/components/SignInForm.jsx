@@ -41,7 +41,7 @@ export default function SignInForm() {
     const password = data.get('password');
     try {
       const response = await signIn({ personalId, password }); 
-      login(response.data.token);
+      await login(response.data.token);
       const roles = auth.roles;
     
       if(roles.includes('ROLE_ADMIN')){
