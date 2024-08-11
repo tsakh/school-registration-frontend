@@ -38,6 +38,24 @@ export const getSteps = () => {
 };
 
 
+export const getStudentsList = () => {
+    return apiClient.get('admin/management/user-information');
+};
+
+export const getStudentSteps = (personalId) => {
+    return apiClient.get('admin/management/user-steps' , {params : {personalId : personalId}});
+};
+
+export const modifyUserStep = (personalId, stepInfomation) => {
+    const stepInfomationArray = Array.isArray(stepInfomation)
+        ? stepInfomation
+        : [stepInfomation];
+    console.log(personalId,stepInfomationArray )
+    return apiClient.post('admin/management/user-steps' ,stepInfomationArray, {params : {personalId : personalId}});
+
+}
+
+
 export const getGrades = () => {
     return apiClient.get('user/questionnaire/grades');
 };
@@ -49,3 +67,4 @@ export const getSchoolNames = () => {
 export const getPossibleAnswers = (lang) => {
     return apiClient.get('user/questionnaire/possible-answers',{params : {language : lang}});
 }
+

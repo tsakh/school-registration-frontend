@@ -44,15 +44,12 @@ export default function SignInForm() {
     const password = data.get('password');
     try {
       const response = await signIn({ personalId, password }); 
-      login(response.data.token);
-      const token = jwtDecode(response.data.token);
-      const roles = token.roles;
-      const questionnaireCompleted= token.isQuestionnaireCompleted;
-    
+      await login(response.data.token);
+      const roles = auth.roles;    
       if(roles.includes('ROLE_ADMIN')){
           navigate('/update');
       }else if (roles.includes('ROLE_USER')){
-          if(questionnaireCompleted) {
+          if(auth.questionnaireCompleted) {
               navigate('/parentPage');
           } else {
               navigate('/questionnaire');

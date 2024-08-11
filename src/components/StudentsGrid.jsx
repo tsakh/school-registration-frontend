@@ -4,6 +4,9 @@ const columns = [
   { field: 'firstName', headerName: 'სახელი', flex: 1 },
   { field: 'lastName', headerName: 'გვარი', flex: 1 },
   { field: 'personalId', headerName: 'პირადი ნომერი', flex: 1.5, sortable:false },
+  { field: 'email', headerName: 'მეილი', flex: 1 },
+  { field: 'phoneNumber', headerName: 'მშობლის ნომერი', flex: 1 }
+  
 ];
 
 
@@ -13,6 +16,8 @@ export default function StudentsList({students, onRowClick}) {
         firstName: student.firstName,
         lastName: student.lastName,
         personalId: student.personalId,
+        email : student.email,
+        phoneNumber: student.phoneNumber
       }));
 
       return (
