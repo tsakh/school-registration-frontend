@@ -7,7 +7,9 @@ import {  questionnaireAvatar, questionnairePageStyle, selectBoxStyle,questionna
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import { useTranslation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
-import { getGrades, getSchoolNames} from '../services/api';
+import { getGrades, getSchoolNames,getPossibleAnswers} from '../services/api';
+import { jwtDecode } from 'jwt-decode'; 
+import {saveQuestionnaireResponse} from '../services/api';
 
 export default function Questionnaire() {
 
@@ -18,6 +20,7 @@ export default function Questionnaire() {
   const [language, setLanguage] = React.useState(null);
   const [grades, setGrades] = React.useState([]);
   const [schools, setSchools] = React.useState([]);
+  const [possibleAnswers, setPossibleAnswers] = React.useState([]);
   React.useEffect(() => {
     const loadGrades = async () => {
       try {
@@ -37,9 +40,21 @@ export default function Questionnaire() {
       }
     };
 
+    const lang = i18n.language.includes('geo') ? 'GE' : 'ENG';
+    const loadPossibleAnswersForInfo = async () => {
+      try {
+        const response = await getPossibleAnswers(lang);
+        setPossibleAnswers(response.data);
+      } catch (error) {
+        console.log("error during getting possible answers for school info");
+      }
+    };
+
+
     
     loadGrades();
     loadSchoolNames();
+    loadPossibleAnswersForInfo();
   }, []);
 
   
@@ -61,22 +76,11 @@ export default function Questionnaire() {
     phoneNumber: null,
     currentSchool: '',
     siblingsInSameSchool: false,
-    specialNeeds: false,
-    informationAboutSchool: '',
-    selectedGrade: '',
+    isSENStudent: false,
+    schoolInformationId: '',
+    gradeApplyingFor: '',
     currentGrade : ''
   });
-
-  const [options, setOptions] = React.useState([]);
-  const [sourceOfInformation, setSourceOfInformation] = React.useState([]);
-
-  const handleDataExtracted = (data) => {
-    setOptions(data);
-  };
-
-  const handleSourceChanged = (data) => {
-    setSourceOfInformation(data);
-  };
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -95,8 +99,21 @@ export default function Questionnaire() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
-
+    try{
+      const token = localStorage.getItem('jwt');
+     
+      if(token){
+         const personalId = jwtDecode(token)?.sub;
+         if(personalId != null){
+            const response = await saveQuestionnaireResponse(personalId,formData);
+            console.log(response); 
+         }
+      }
+    
+    } catch (error){
+          alert('try again!')
+    }
+   
   };
 
   return (
@@ -171,8 +188,8 @@ export default function Questionnaire() {
             <FormControl fullWidth>
               <InputLabel>{t('GradeApplyingFor')}</InputLabel>
               <Select
-                name="selectedGrade"
-                value={formData.selectedGrade}
+                name="gradeApplyingFor"
+                value={formData.gradeApplyingFor}
                 onChange={handleChange}
                 sx={selectBoxStyle}
               >
@@ -203,13 +220,13 @@ export default function Questionnaire() {
             <FormControl fullWidth>
               <InputLabel>{t('SourceOfInfo')}</InputLabel>
               <Select
-                name="informationAboutSchool"
-                value={formData.informationAboutSchool}
+                name="schoolInformationId"
+                value={formData.schoolInformationId}
                 onChange={handleChange}
                 sx={selectBoxStyle}
               >
-                {sourceOfInformation.map((option, index) => (
-                  <MenuItem key={index} value={option}>{option}</MenuItem>
+                {possibleAnswers.map((option) => (
+                  <MenuItem key={option.possibleAnswerId} value={option.possibleAnswerId}>{option.probableAnswerDescr}</MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -231,9 +248,9 @@ export default function Questionnaire() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={formData.specialNeeds}
+                  checked={formData.isSENStudent}
                   onChange={handleChange}
-                  name="specialNeeds"
+                  name="isSENStudent"
                   color="primary"
                 />
               }
@@ -247,8 +264,6 @@ export default function Questionnaire() {
           </Grid>
         </Grid>
       </form>
-      <SchoolDataExtractor onDataExtracted={handleDataExtracted} />
-      <SourceList onSourceChanged={handleSourceChanged} />
     </Container>
   );
 }
