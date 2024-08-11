@@ -86,7 +86,7 @@ export default function Questionnaire() {
     const { name, value, type, checked } = event.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: name === 'schoolInformationId' ? String(value) : (type === 'checkbox' ? checked : value),
     });
   };
 
