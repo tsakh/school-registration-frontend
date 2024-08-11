@@ -24,6 +24,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import CloseIcon from '@mui/icons-material/Close';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import axios from 'axios';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -40,9 +41,9 @@ export default function UpdatableStepCard(props) {
     const obj = props.stepData;
 
     const [expand, setExpand] = useState(false);
-    const [additionalInfo, setAdditionalInfo] = useState(obj.additionalInfo || '');
+    const [additionalInfo, setAdditionalInfo] = useState(obj.stepInfo || '');
     const [calendar, setCalendar] = useState(
-        (obj.calendar || []).map(date => date ? new Date(date) : null)
+        (obj.timeSlots || []).map(date => date ? new Date(date) : null)
     );
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -65,11 +66,30 @@ export default function UpdatableStepCard(props) {
         setDialogOpen(false);
     };
 
-    const handleSaveClick = () => {
+    const handleSaveClick = async () => {
         setAdditionalInfo(tempAdditionalInfo);
         setCalendar(tempCalendar);
         setDialogOpen(false);
-        // here updated information should be sent to a server
+    
+        try {
+            const stepId = obj.stepId; 
+    
+            const requestBody = {
+                stepInfo: tempAdditionalInfo,
+                timeSlots: tempCalendar.map(date => moment(date).toISOString())
+            };
+    
+            await axios.post(`http://localhost:8080/admin/steps?stepId=${stepId}`, requestBody, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            console.log('Step updated successfully');
+        } catch (error) {
+            console.error('Error updating step:', error);
+        }
     };
 
     const handleTempCalendarChange = (index, date) => {
@@ -115,7 +135,7 @@ export default function UpdatableStepCard(props) {
                     <Typography style={{ overflowWrap: 'break-word' }}>
                         {additionalInfo}
                     </Typography>
-                    {obj.needsCalendar && (
+                    {obj.calendarEvent && (
                         <List>
                             {calendar.map((event, index) => (
                                 <ListItem key={index}>
@@ -148,7 +168,7 @@ export default function UpdatableStepCard(props) {
                         value={tempAdditionalInfo}
                         onChange={(e) => setTempAdditionalInfo(e.target.value)}
                     />
-                    {obj.isCalendarEvent && (
+                    {obj.calendarEvent && (
                         <List>
                             {tempCalendar.map((event, index) => (
                                 <ListItem key={index}>

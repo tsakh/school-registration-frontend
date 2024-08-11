@@ -39,7 +39,7 @@ const StepForAdmin = ({ stepData, onDelete, disabled }) => {
             </CardContent>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <Typography variant="body2">{stepData.additionalInfo}</Typography>
+                    <Typography variant="body2">{stepData.addInfo}</Typography>
                 </CardContent>
             </Collapse>
         </Card>
