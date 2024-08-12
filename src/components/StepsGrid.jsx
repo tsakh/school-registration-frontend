@@ -1,12 +1,17 @@
-import {Grid, Typography} from '@mui/material'
+import {Grid, Button} from '@mui/material'
 import StepCard from './Step';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode'; 
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../customHooks/useAuth';
 
 export default function StepsGrid(props) {
 
     const [stepsData, setStepsData] = useState([]);
+    const {logout} = useAuth();
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchStepsData = async () => {
@@ -35,15 +40,27 @@ export default function StepsGrid(props) {
         fetchStepsData();
     }, [props.personalId]);
 
+    const handleLogout = async () => {
+        await logout();
+        navigate('/login'); 
+    };
+
+
     return (
-        <Grid container spacing= '1vw' justifyContent='center' alignItems='center' textAlign='center' >
-            {stepsData.map( (stepData, index) => ( //1 for xs, 2 for small, 3 for medium and 4 pcs for large screen
-                 <Grid item key= {index} xs={12} sm={6} md={4} lg={3}>
-                  <StepCard stepData = {stepData}></StepCard> 
-                
-             </Grid>
-            )
-            )}
+        <>
+         <Grid container justifyContent='flex-start' alignItems='center' style={{ margin: '2vw' }}>
+                <Button variant="contained" color="secondary" onClick={handleLogout}>
+                    Logout
+                </Button>
+         </Grid>
+
+        <Grid container spacing='1vw' justifyContent='center' alignItems='center' textAlign='center'>
+            {stepsData.map((stepData, index) => (
+                <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                    <StepCard stepData={stepData}></StepCard>
+                </Grid>
+            ))}
         </Grid>
+    </>
     )
 }

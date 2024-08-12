@@ -48,8 +48,12 @@ export const AuthProvider = ({ children }) => {
     
 
     const logout = () => {
-        setAuth({ roles: [], personalId: null });
-        localStorage.removeItem('jwt');
+        return new Promise((resolve) => {
+            setAuth({ roles: [], personalId: null, questionnaireCompleted: false });
+            localStorage.removeItem('jwt');
+            setAuthFinished(false);
+            resolve(); 
+        });
     };
 
     return (
