@@ -2,9 +2,10 @@ import * as React from 'react';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Container, Grid, Button, Menu, MenuItem, Checkbox, ListItemText, FormControl } from '@mui/material';
-import { getGrades } from '../services/api';
+import { Container, Grid, Button, Menu, MenuItem, Checkbox, ListItemText, FormControl,Typography } from '@mui/material';
+import { getGradesForAdmin,getSenStudentsInformation } from '../services/api';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { PieChart } from '@mui/x-charts/PieChart';
 
 export default function AnalyticsPage() {
   
@@ -13,19 +14,34 @@ export default function AnalyticsPage() {
     const [grades, setGrades] = React.useState([]);
     const [chosenGrades, setChosenGrades] = React.useState([]);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [senStudentsInfo, setSenStudentsInfo] = React.useState([0,0]);
+
+    const loadGrades = async () => {
+        try {
+            const response = await getGradesForAdmin();
+            setGrades(response.data); 
+            setChosenGrades(response.data); 
+        } catch (error) {
+            console.log("Error during getting grades:", error);
+        }
+    };
+
+    const loadSenStudents = async () => {
+        const dateStart = startDate.format('YYYY-MM-DD');
+        const dateEnd = endDate.format('YYYY-MM-DD');
+        try {
+            
+            const response = await getSenStudentsInformation({dateStart, dateEnd});
+            setSenStudentsInfo([response.data.senstudentNum, response.data.studentNum]); 
+        } catch (error) {
+            console.log("Error during getting sen students:", error);
+        }
+    };
 
     React.useEffect(() => {
-        const loadGrades = async () => {
-            try {
-                const response = await getGrades();
-                setGrades(response.data); 
-                setChosenGrades(response.data); 
-            } catch (error) {
-                console.log("Error during getting grades:", error);
-            }
-        };
-
+      
         loadGrades();
+        loadSenStudents();
     }, []);
 
     const handleGradeChange = (event) => {
@@ -44,9 +60,9 @@ export default function AnalyticsPage() {
     const open = Boolean(anchorEl);
 
     const handleSubmit = () => {
-        console.log(startDate.format('MM/DD/YYYY'));
-        console.log(endDate.format('MM/DD/YYYY'));
-        console.log(chosenGrades);
+        
+        loadGrades();
+        loadSenStudents();
     };   
 
     return (
@@ -99,6 +115,25 @@ export default function AnalyticsPage() {
                     </Grid>
                 </Grid>
             </LocalizationProvider>
+           
+            {senStudentsInfo[1] > 0 ? (
+                <PieChart
+                    series={[
+                        {
+                            data: [
+                                { id: 0, value: senStudentsInfo[0], label: 'სსმმ' },
+                                { id: 1, value: senStudentsInfo[1] - senStudentsInfo[0], label: 'არა სსმმ' },
+                            ],
+                        },
+                    ]}
+                    width={400}
+                    height={200}
+                />
+            ) : (
+                <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
+                    დროის მოცემულ ინტერვალში სპეციალური საჭიროების მქონე მოსწავლეებზე ინფორმაცია არ არსებობს
+                </Typography>
+            )}
         </Container>
     );
 }

@@ -68,3 +68,11 @@ export const getPossibleAnswers = (lang) => {
     return apiClient.get('user/questionnaire/possible-answers',{params : {language : lang}});
 }
 
+export const getSenStudentsInformation = (reqBody) => {
+    return apiClient.get('/admin/analytics/SEN',{params : {startDate : reqBody.dateStart,endDate: reqBody.dateEnd,grades : reqBody.chosenGrades}});
+}
+
+
+export const getGradesForAdmin = () => {
+    return apiClient.get('admin/management/grades');
+};
