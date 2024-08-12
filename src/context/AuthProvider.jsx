@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     const login = (token) => {
         return new Promise((resolve, reject) => {
             try {
-                setAuthFinished(false); 
+                setAuthFinished(false);
                 const decoded = jwtDecode(token);
                 const roles = decoded.roles || [];
                 const personalId = decoded.sub || null;
@@ -36,15 +36,16 @@ export const AuthProvider = ({ children }) => {
     
                 setAuth({ roles, personalId, questionnaireCompleted });
                 localStorage.setItem('jwt', token);
-                resolve(); 
+                setAuthFinished(true);
+                resolve({ roles, questionnaireCompleted });  //returning as promise result
             } catch (e) {
                 console.error('Failed to decode token:', e);
-                reject(e); 
-            } finally {
-                setAuthFinished(true); 
+                setAuthFinished(true);
+                reject(e);
             }
         });
     };
+    
 
     const logout = () => {
         setAuth({ roles: [], personalId: null });
