@@ -42,8 +42,7 @@ export default function Calendar(props) {
         const requestData = {
             personalId: personalId,
             stepId: props.stepId, 
-            stepEventId: props.stepEventId,
-            selectedTimeSlotId: selectedOption.id
+            stepEventId: selectedOption.id
         };
 
         try {
