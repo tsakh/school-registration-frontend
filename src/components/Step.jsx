@@ -59,7 +59,7 @@ export default function StepCard(props) {
                             {obj.stepInfo}
                         </Typography>
                     ) : (
-                        <Calendar options = {obj.timeSlots} selectedDate = {obj.chosenTimeSlot}/>
+                        <Calendar options = {obj.timeSlots} selectedDate = {obj.chosenTimeSlot} stepId = {obj.stepId}/>
                     )
                     }
                 </Box>
