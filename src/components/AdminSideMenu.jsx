@@ -4,13 +4,14 @@ import { Box, Button, Typography } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import UpdateIcon from '@mui/icons-material/Update';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
+import useAuth from '../customHooks/useAuth';
 
 const AdminSideMenu = ({ onHover }) => {
     const [hover, setHover] = useState(false);
     const navigate = useNavigate();
+    const {logout} = useAuth();
 
     const handleMouseEnter = () => {
         setHover(true);
@@ -26,9 +27,9 @@ const AdminSideMenu = ({ onHover }) => {
         navigate(path);
     };
 
-    const handleLogout = () => {
-        navigate('/');
-        alert('Logged out');
+    const handleLogout = async() => {
+        await logout();
+        navigate('/login');
     };
 
     return (

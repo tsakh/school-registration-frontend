@@ -8,6 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import useAuth from '../customHooks/useAuth';
 import {signIn} from '../services/api';
 import MessageBox from './MessageBox';
+import { jwtDecode } from 'jwt-decode'; 
+
+
 export default function SignInForm() {
   const navigate = useNavigate();
   const { t: tCommon } = useTranslation('translation', { keyPrefix: 'Common' });
@@ -40,33 +43,28 @@ export default function SignInForm() {
     const personalId = data.get('personalId');
     const password = data.get('password');
     try {
-      const response = await signIn({ personalId, password }); 
-      login(response.data.token);
-      const roles = auth.roles;
-    
-      if(roles.includes('ROLE_ADMIN')){
-          navigate('/update');
-      }else if (roles.includes('ROLE_USER')){
-          if(auth.questionnaireCompleted) {
-              navigate('/parentPage');
-          } else {
-              navigate('/questionnaire');
-          }
-          
+        const response = await signIn({ personalId, password }); 
+        const { roles, questionnaireCompleted } = await login(response.data.token);
 
-      } 
+        if (roles.includes('ROLE_ADMIN')) {
+            navigate('/update');
+        } else if (roles.includes('ROLE_USER')) {
+            if (questionnaireCompleted) {
+                navigate('/parentPage');
+            } else {
+                navigate('/questionnaire');
+            }
+        } 
     } catch (error) {
-        if(error?.response?.status === 409){
-          
-          setMessageBoxMessage(t('StudentNotFound'));
+        if (error?.response?.status === 409) {
+            setMessageBoxMessage(t('StudentNotFound'));
         } else {
-  
-          setMessageBoxMessage(t('ServiceProblem'));
+            setMessageBoxMessage(t('ServiceProblem'));
         }
-
         setMessageBoxOpen(true);
     }
-  };
+};
+
 
   return (
     <Paper style={signInPaperStyle} elevation={1}>
