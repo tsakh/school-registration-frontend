@@ -62,7 +62,7 @@ export default function SignUpForm() {
                                       lastName,
                                       email,
                                       password,
-                                      formattedDate,
+                                      birthday:formattedDate,
                                       parentFirstname,
                                       parentLastname}); 
   
