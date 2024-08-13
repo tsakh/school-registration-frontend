@@ -2,11 +2,13 @@ import * as React from 'react';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Container, Grid, Button, Menu, MenuItem, Checkbox, ListItemText, FormControl,Typography } from '@mui/material';
+import { Container, Grid, Button, Menu, MenuItem, Checkbox, ListItemText, FormControl,Typography, Box } from '@mui/material';
 import { getGradesForAdmin,getSenStudentsInformation } from '../services/api';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { Grade } from '@mui/icons-material';
+import AdminSideMenu from './AdminSideMenu';
+import {useState } from 'react';
 
 export default function AnalyticsPage() {
   
@@ -16,6 +18,7 @@ export default function AnalyticsPage() {
     const [chosenGrades, setChosenGrades] = React.useState([]);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [senStudentsInfo, setSenStudentsInfo] = React.useState([0,0]);
+    const [menuHover, setMenuHover] = useState(false);
 
     const loadGrades = async () => {
         try {
@@ -76,7 +79,9 @@ export default function AnalyticsPage() {
     }
 
     return (
-        <Container sx={{ marginTop: 2 }}>
+        <Box sx={{ display: 'flex' }}>
+        <AdminSideMenu onHover={setMenuHover} />
+        <Container sx={{ marginTop: 2, ml: menuHover ? '20vw' : '5vw', transition: 'margin-left 0.3s' }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item>
@@ -150,5 +155,6 @@ export default function AnalyticsPage() {
                 </Typography>
             )}
         </Container>
+        </Box>
     );
 }
