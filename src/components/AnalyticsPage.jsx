@@ -135,9 +135,14 @@ export default function AnalyticsPage() {
                     </Grid>
                 </Grid>
             </LocalizationProvider>
+            
            
             {senStudentsInfo[1] > 0 ? (
                 <PieChart
+
+                width={400}
+                height={200}
+                
                     series={[
                         {
                             data: [
@@ -146,14 +151,18 @@ export default function AnalyticsPage() {
                             ],
                         },
                     ]}
-                    width={400}
-                    height={200}
+                  
+
+                    
+                 
                 />
             ) : (
                 <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
                     დროის მოცემულ ინტერვალში სპეციალური საჭიროების მქონე მოსწავლეებზე ინფორმაცია არ არსებობს
                 </Typography>
             )}
+
+            
         </Container>
         </Box>
     );
