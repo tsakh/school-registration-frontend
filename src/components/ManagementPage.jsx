@@ -8,7 +8,7 @@ import { managementPageStyle, progressTabStyle } from '../styles';
 import AdminSideMenu from './AdminSideMenu';
 import {getStudentsList} from '../services/api';
 import {getStudentSteps} from '../services/api.js'
-
+import { modifyUserSteps } from '../services/api';
 
 
 export default function ManagementPage() {
@@ -44,7 +44,6 @@ export default function ManagementPage() {
         try {
             const response = await getStudentSteps(student.personalId);
             setStudentProgress(response.data); 
-            console.log(response.data);
             setIsDialogOpen(true);
         } catch (error) {
             console.error('Error fetching steps data:', error);
@@ -55,7 +54,21 @@ export default function ManagementPage() {
 
     const handleCloseDialog = () => {
         setIsDialogOpen(false);
+        sendUpdateToBack();
     };
+
+    const sendUpdateToBack = async() =>{
+        const requestData = studentProgress.map(step => ({
+            stepId: step.stepId,
+            isPassed: step.passed
+        }));
+        await modifyUserSteps(selectedStudent.personalId, requestData);
+
+    }
+
+    const handleStepInfoChange = (updatedSteps)=> {
+        setStudentProgress(updatedSteps);
+    }
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -70,7 +83,7 @@ export default function ManagementPage() {
                             <Typography>სახელი: {selectedStudent.firstName}</Typography>
                             <Typography>გვარი: {selectedStudent.lastName}</Typography>
                             <Typography>პირადი ნომერი: {selectedStudent.personalId}</Typography>
-                            <StudentProgress stepsInfo={studentProgress} personalId = {selectedStudent.personalId} />
+                            <StudentProgress stepsInfo={studentProgress} onStepsInfoChange = {handleStepInfoChange} />
                         </Paper>
                     )}
                 </Dialog>

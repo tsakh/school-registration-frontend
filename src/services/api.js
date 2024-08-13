@@ -46,12 +46,10 @@ export const getStudentSteps = (personalId) => {
     return apiClient.get('admin/management/user-steps' , {params : {personalId : personalId}});
 };
 
-export const modifyUserStep = (personalId, stepInfomation) => {
-    const stepInfomationArray = Array.isArray(stepInfomation)
-        ? stepInfomation
-        : [stepInfomation];
-    console.log(personalId,stepInfomationArray )
-    return apiClient.post('admin/management/user-steps' ,stepInfomationArray, {params : {personalId : personalId}});
+export const modifyUserSteps= (personalId, modifiedSteps) => {
+    
+    console.log(personalId,modifiedSteps )
+    return apiClient.post('admin/management/user-steps' , modifiedSteps, {params : {personalId : personalId}});
 
 }
 
