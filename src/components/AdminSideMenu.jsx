@@ -58,7 +58,7 @@ const AdminSideMenu = ({ onHover }) => {
             <Box sx={{ textAlign: 'center', mt: 2 }}>
                 <AccountCircleIcon fontSize="large" />
                 <Typography variant="h6" sx={{ display: hover ? 'block' : 'none', mt: 1 }}>
-                    Admin Info
+                    Admin
                 </Typography>
             </Box>
             <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4, width: '100%' }}>
