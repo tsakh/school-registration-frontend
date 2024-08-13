@@ -69,7 +69,7 @@ export const getPossibleAnswers = (lang) => {
 }
 
 export const getSenStudentsInformation = (reqBody) => {
-    return apiClient.get('/admin/analytics/SEN',{params : {startDate : reqBody.dateStart,endDate: reqBody.dateEnd,grades : reqBody.chosenGrades}});
+    return apiClient.get('/admin/analytics/SEN',{params : {startDate : reqBody.dateStart,endDate: reqBody.dateEnd,grades : reqBody.gradesArr}});
 }
 
 

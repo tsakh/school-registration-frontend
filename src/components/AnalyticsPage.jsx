@@ -6,6 +6,7 @@ import { Container, Grid, Button, Menu, MenuItem, Checkbox, ListItemText, FormCo
 import { getGradesForAdmin,getSenStudentsInformation } from '../services/api';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { PieChart } from '@mui/x-charts/PieChart';
+import { Grade } from '@mui/icons-material';
 
 export default function AnalyticsPage() {
   
@@ -19,8 +20,8 @@ export default function AnalyticsPage() {
     const loadGrades = async () => {
         try {
             const response = await getGradesForAdmin();
-            setGrades(response.data); 
             setChosenGrades(response.data); 
+            setGrades(response.data); 
         } catch (error) {
             console.log("Error during getting grades:", error);
         }
@@ -30,8 +31,8 @@ export default function AnalyticsPage() {
         const dateStart = startDate.format('YYYY-MM-DD');
         const dateEnd = endDate.format('YYYY-MM-DD');
         try {
-            
-            const response = await getSenStudentsInformation({dateStart, dateEnd});
+            const gradesArr = chosenGrades.join(',');
+            const response = await getSenStudentsInformation({dateStart, dateEnd,gradesArr});
             setSenStudentsInfo([response.data.senstudentNum, response.data.studentNum]); 
         } catch (error) {
             console.log("Error during getting sen students:", error);
@@ -39,15 +40,15 @@ export default function AnalyticsPage() {
     };
 
     React.useEffect(() => {
-      
-        loadGrades();
-        loadSenStudents();
+        loadGrades(); 
     }, []);
 
-    const handleGradeChange = (event) => {
-        const value = event.target.value;
-        setChosenGrades(value);
-    };
+    React.useEffect(() => {
+        if (chosenGrades.length > 0) {
+            loadSenStudents(); 
+        }
+    }, [grades]);
+   
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -61,9 +62,18 @@ export default function AnalyticsPage() {
 
     const handleSubmit = () => {
         
-        loadGrades();
         loadSenStudents();
     };   
+
+    const handleGradeChange = (currGrade) => {
+        
+
+        if(chosenGrades.includes(currGrade)){
+            setChosenGrades(chosenGrades.filter(grade => grade !== currGrade));
+        } else {
+            setChosenGrades([...chosenGrades,currGrade]);
+        }
+    }
 
     return (
         <Container sx={{ marginTop: 2 }}>
@@ -98,9 +108,14 @@ export default function AnalyticsPage() {
                                 anchorEl={anchorEl}
                                 open={open}
                                 onClose={handleClose}
+                                sx={{
+                                    maxHeight: 400, 
+                                    overflowY: 'auto', 
+                                    
+                                }}
                             >
                                 {grades.map((grade) => (
-                                    <MenuItem key={grade} value={grade} onClick={() => handleGradeChange({ target: { value: chosenGrades.includes(grade) ? chosenGrades.filter(g => g !== grade) : [...chosenGrades, grade] } })}>
+                                    <MenuItem key={grade} value={grade} onClick={() => handleGradeChange(grade)}>
                                         <Checkbox checked={chosenGrades.includes(grade)} />
                                         <ListItemText primary={grade} />
                                     </MenuItem>
