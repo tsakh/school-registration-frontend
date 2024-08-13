@@ -64,7 +64,7 @@ const AdminStepCreationPage = ({ stepsData }) => {
     const handleSave = async () => {
         const stepsAdded = cards.filter(card => !originalCards.includes(card)).map(card => ({
             name: card.stepName,
-            additionalInfo: card.additionalInfo,
+            additionalInfo: card.addInfo,
             isCalendarEvent: card.isCalendarEvent
         }));
 
