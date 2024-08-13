@@ -17,7 +17,7 @@ export default function Calendar(props) {
     return (
     <form onSubmit = {handleSubmit}>
         <FormControl component="fieldset">
-            <FormLabel component="legend">Please, select your compatible option</FormLabel>
+            <FormLabel component="legend">აირჩიეთ სასურველი დრო:</FormLabel>
             <RadioGroup value = {date} onChange={handleRadioChange}>
                 {options.map((option, index) => (
                     <FormControlLabel
