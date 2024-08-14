@@ -76,7 +76,7 @@ export default function UpdatableStepCard(props) {
             const stepId = obj.stepId; 
             const slots = tempCalendar.map(date => ({
                 id: date.id,
-                timeSlot: moment(date.timeSlot).toISOString()
+                timeSlot: moment(date.timeSlot).utcOffset(4).format('YYYY-MM-DDTHH:mm:ss')
             }));
             const requestBody = {
                 stepInfo: tempAdditionalInfo,
@@ -101,7 +101,7 @@ export default function UpdatableStepCard(props) {
         console.log(tempCalendar);
         const newTempCalendar = [...tempCalendar];
         console.log(id,date);
-        setTempCalendar(newTempCalendar.map(curr =>  curr.id !== id ? curr : {...curr, timeSlot : moment(date).utcOffset(4).toDate()} ));
+        setTempCalendar(newTempCalendar.map(curr =>  curr.id !== id ? curr : {...curr, timeSlot : date} ));
     };
 
     const handleAddTempCalendarEvent = () => {
