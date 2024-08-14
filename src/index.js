@@ -17,8 +17,7 @@ import Questionnaire from './components/Questionnaire';
 import AuthChecker from './components/AuthChecker';
 import Unauthorized from './components/Unauthorized';
 import RoleDirector from './components/RoleDirector';
-import AnalyticsPage from './components/AnalyticsPage';
-
+import AnalyticsPage from './components/AnalyticsPage'
 i18next.init({
   interpolation :{escapeValue: false},
   lng: "en",
