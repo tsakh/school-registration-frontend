@@ -7,6 +7,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LogoutIcon from '@mui/icons-material/Logout';
 import useAuth from '../customHooks/useAuth';
+import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 
 const AdminSideMenu = ({ onHover }) => {
     const [hover, setHover] = useState(false);
@@ -57,7 +58,7 @@ const AdminSideMenu = ({ onHover }) => {
             <Box sx={{ textAlign: 'center', mt: 2 }}>
                 <AccountCircleIcon fontSize="large" />
                 <Typography variant="h6" sx={{ display: hover ? 'block' : 'none', mt: 1 }}>
-                    Admin Info
+                    Admin
                 </Typography>
             </Box>
             <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4, width: '100%' }}>
@@ -94,7 +95,19 @@ const AdminSideMenu = ({ onHover }) => {
                         {hover && 'Management'}
                     </Button>
                 </Box>
+                <Box sx={{ width: '100%', mb: 2 }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<SignalCellularAltIcon />} 
+                        sx={{ display: 'flex', justifyContent: hover ? 'flex-start' : 'center', width: '100%' }}
+                        onClick={() => handleNavigation('/analytics')}
+                    >
+                        {hover && 'Analytics'}
+                    </Button>
+                </Box>
             </Box>
+            
             <Box sx={{ width: '100%', mb: 2 }}>
                 <Button
                     variant="contained"

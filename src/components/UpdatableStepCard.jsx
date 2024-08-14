@@ -25,6 +25,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
+import EventIcon from '@mui/icons-material/Event';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -43,13 +44,13 @@ export default function UpdatableStepCard(props) {
     const [expand, setExpand] = useState(false);
     const [additionalInfo, setAdditionalInfo] = useState(obj.stepInfo || '');
     const [calendar, setCalendar] = useState(
-        (obj.timeSlots || []).map(date => date ? new Date(date) : null)
+        (obj.timeSlots || []).map(date => moment(date).utcOffset(4).toDate() ? new Date(date) : null)
     );
     const [dialogOpen, setDialogOpen] = useState(false);
 
     const [tempAdditionalInfo, setTempAdditionalInfo] = useState(obj.additionalInfo || '');
     const [tempCalendar, setTempCalendar] = useState(
-        (obj.calendar ? [...obj.calendar] : []).map(date => date ? new Date(date) : null)
+        (obj.calendar ? [...obj.calendar] : []).map(date => moment(date).utcOffset(4).toDate() ? new Date(date) : null)
     );
 
     const handleExpandClick = () => {
@@ -76,8 +77,8 @@ export default function UpdatableStepCard(props) {
     
             const requestBody = {
                 stepInfo: tempAdditionalInfo,
-                timeSlots: tempCalendar.map(date => moment(date).toISOString())
-            };
+                timeSlots: tempCalendar.map(date => moment(date).utcOffset(4).format('YYYY-MM-DDTHH:mm:ss'))
+            };            
     
             await axios.post(`http://localhost:8080/admin/steps?stepId=${stepId}`, requestBody, {
                 headers: {
@@ -94,7 +95,7 @@ export default function UpdatableStepCard(props) {
 
     const handleTempCalendarChange = (index, date) => {
         const newTempCalendar = [...tempCalendar];
-        newTempCalendar[index] = date;
+        newTempCalendar[index] = moment(date).utcOffset(4).toDate();
         setTempCalendar(newTempCalendar);
     };
 
@@ -115,9 +116,14 @@ export default function UpdatableStepCard(props) {
     return (
         <Card sx={{ width: '20vw' }}>
             <CardContent>
-                <Typography>
-                    {obj.stepName}
-                </Typography>
+                <Box display="flex" justifyContent="space-between" alignItems="center"> 
+                    <Typography>
+                        {obj.stepName}
+                    </Typography>
+                    {obj.calendarEvent && (
+                                <EventIcon style={{ marginLeft: '8px' }} color="primary" />
+                            )}
+                </Box>
             </CardContent>
 
             <CardActions>

@@ -46,12 +46,10 @@ export const getStudentSteps = (personalId) => {
     return apiClient.get('admin/management/user-steps' , {params : {personalId : personalId}});
 };
 
-export const modifyUserStep = (personalId, stepInfomation) => {
-    const stepInfomationArray = Array.isArray(stepInfomation)
-        ? stepInfomation
-        : [stepInfomation];
-    console.log(personalId,stepInfomationArray )
-    return apiClient.post('admin/management/user-steps' ,stepInfomationArray, {params : {personalId : personalId}});
+export const modifyUserSteps= (personalId, modifiedSteps) => {
+    
+    console.log(personalId,modifiedSteps )
+    return apiClient.post('admin/management/user-steps' , modifiedSteps, {params : {personalId : personalId}});
 
 }
 
@@ -68,3 +66,16 @@ export const getPossibleAnswers = (lang) => {
     return apiClient.get('user/questionnaire/possible-answers',{params : {language : lang}});
 }
 
+export const getSenStudentsInformation = (reqBody) => {
+    return apiClient.get('/admin/analytics/SEN',{params : {startDate : reqBody.dateStart,endDate: reqBody.dateEnd,grades : reqBody.gradesArr}});
+}
+
+
+export const getGradesForAdmin = () => {
+    return apiClient.get('admin/management/grades');
+};
+
+export const downloadReport = (params) => {
+    return apiClient.get('/admin/report',{params : {startDate : params.dateStart,endDate: params.dateEnd,grades : params.gradesArr, language: 'EN'},
+    responseType:'blob'});
+}

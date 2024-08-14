@@ -17,6 +17,8 @@ import Questionnaire from './components/Questionnaire';
 import AuthChecker from './components/AuthChecker';
 import Unauthorized from './components/Unauthorized';
 import RoleDirector from './components/RoleDirector';
+import AnalyticsPage from './components/AnalyticsPage';
+
 i18next.init({
   interpolation :{escapeValue: false},
   lng: "en",
@@ -46,9 +48,6 @@ const stepsForUpdate = [{ stepName: 'Step 2', additionalInfo: "info1", isCalenda
 ];
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const logOut = () => {
-    console.log("log out")
-};
 
 root.render(
   <React.StrictMode>
@@ -91,6 +90,9 @@ root.render(
                 </Route>
 
                 <Route exact path="/management" element= {<ManagementPage/>}>
+                </Route>
+
+                <Route exact path="/analytics" element= {<AnalyticsPage/>}>
                 </Route>
 
             </Route>

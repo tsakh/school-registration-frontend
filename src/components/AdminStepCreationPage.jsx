@@ -8,7 +8,7 @@ import { getSteps } from '../services/api';
 
 const AdminStepCreationPage = ({ stepsData }) => {
     const [stepName, setStepName] = useState('');
-    const [additionalInfo, setAdditionalInfo] = useState('');
+    const [addInfo, setaddInfo] = useState('');
     const [isCalendarEvent, setIsCalendarEvent] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -34,13 +34,13 @@ const AdminStepCreationPage = ({ stepsData }) => {
     const handleAddCard = () => {
         const newCard = {
             stepName: stepName.trim() !== '' ? stepName : 'New Step',
-            additionalInfo: additionalInfo.trim() !== '' ? additionalInfo : '',
+            addInfo: addInfo.trim() !== '' ? addInfo : '',
             isCalendarEvent: isCalendarEvent,
             id: new Date().getTime() // temp id until saved
         };
         setCards([...cards, newCard]);
         setStepName('');
-        setAdditionalInfo('');
+        setaddInfo('');
         setIsCalendarEvent(false);
         setDialogOpen(false);
     };
@@ -64,11 +64,12 @@ const AdminStepCreationPage = ({ stepsData }) => {
     const handleSave = async () => {
         const stepsAdded = cards.filter(card => !originalCards.includes(card)).map(card => ({
             name: card.stepName,
-            additionalInfo: card.additionalInfo,
+            additionalInfo: card.addInfo,
             isCalendarEvent: card.isCalendarEvent
         }));
 
         try {
+            console.log(cards);
             await axios.post('http://localhost:8080/admin/steps/modify', {
                 idsDeleted: deletedStepIds,
                 stepsAdded
@@ -177,8 +178,8 @@ const AdminStepCreationPage = ({ stepsData }) => {
                             label="Additional Info"
                             type="text"
                             fullWidth
-                            value={additionalInfo}
-                            onChange={(e) => setAdditionalInfo(e.target.value)}
+                            value={addInfo}
+                            onChange={(e) => setaddInfo(e.target.value)}
                         />
                         <FormControlLabel
                             control={
