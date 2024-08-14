@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import moment from 'moment';
 import {
@@ -43,13 +43,13 @@ export default function UpdatableStepCard(props) {
     const [expand, setExpand] = useState(false);
     const [additionalInfo, setAdditionalInfo] = useState(obj.stepInfo || '');
     const [calendar, setCalendar] = useState(
-        (obj.timeSlots || []).map(date => date ? new Date(date) : null)
+        ((obj.timeSlots) || [])
     );
     const [dialogOpen, setDialogOpen] = useState(false);
 
     const [tempAdditionalInfo, setTempAdditionalInfo] = useState(obj.additionalInfo || '');
     const [tempCalendar, setTempCalendar] = useState(
-        (obj.calendar ? [...obj.calendar] : []).map(date => date ? new Date(date) : null)
+        (obj.calendar ? [...obj.calendar] : [])
     );
 
     const handleExpandClick = () => {
@@ -73,10 +73,13 @@ export default function UpdatableStepCard(props) {
     
         try {
             const stepId = obj.stepId; 
-    
+            const slots = tempCalendar.map(date => ({
+                id: date.id,
+                timeSlot: moment(date.timeSlot).toISOString()
+            }));
             const requestBody = {
                 stepInfo: tempAdditionalInfo,
-                timeSlots: tempCalendar.map(date => moment(date).toISOString())
+                timeSlots: slots
             };
     
             await axios.post(`http://localhost:8080/admin/steps?stepId=${stepId}`, requestBody, {
@@ -85,30 +88,32 @@ export default function UpdatableStepCard(props) {
                     'Content-Type': 'application/json'
                 }
             });
-    
+
+            props.onUpdate();
             console.log('Step updated successfully');
         } catch (error) {
             console.error('Error updating step:', error);
         }
     };
 
-    const handleTempCalendarChange = (index, date) => {
+    const handleTempCalendarChange = (id, date) => {
+        console.log(tempCalendar);
         const newTempCalendar = [...tempCalendar];
-        newTempCalendar[index] = date;
-        setTempCalendar(newTempCalendar);
+        console.log(id,date);
+        setTempCalendar(newTempCalendar.map(curr =>  curr.id !== id ? curr : {...curr, timeSlot : moment(date).utcOffset(4).toDate()} ));
     };
 
     const handleAddTempCalendarEvent = () => {
-        setTempCalendar([...tempCalendar, new Date()]);
+        const newDate = {
+            id: new Date().getTime(),
+            timeSlot: new Date()
+        }
+        setTempCalendar([...tempCalendar, newDate]);
     };
 
-    const handleDeleteEvent = (index) => {
-        const newCalendar = calendar.filter((_, i) => i !== index);
-        setCalendar(newCalendar);
-    };
 
-    const handleDeleteTempEvent = (index) => {
-        const newTempCalendar = tempCalendar.filter((_, i) => i !== index);
+    const handleDeleteTempEvent = (id) => {
+        const newTempCalendar = tempCalendar.filter(event  => event.id !== id);
         setTempCalendar(newTempCalendar);
     };
 
@@ -137,9 +142,9 @@ export default function UpdatableStepCard(props) {
                     </Typography>
                     {obj.calendarEvent && (
                         <List>
-                            {calendar.map((event, index) => (
-                                <ListItem key={index}>
-                                    <ListItemText primary = {event ? moment(event).format('DD/MM/YYYY HH:mm') : 'Invalid date'}/>
+                            {calendar.map((event) => (
+                                <ListItem key={event.id}>
+                                    <ListItemText primary = {event.timeSlot ? moment(event.timeSlot).format('DD/MM/YYYY HH:mm') : 'Invalid date'}/>
                                 </ListItem>
                             ))}
                         </List>
@@ -170,19 +175,19 @@ export default function UpdatableStepCard(props) {
                     />
                     {obj.calendarEvent && (
                         <List>
-                            {tempCalendar.map((event, index) => (
-                                <ListItem key={index}>
+                            {tempCalendar.map((event) => (
+                                <ListItem key={event.id}>
                                     <div className="customDatePickerContainer">
                                         <DatePicker
-                                            selected={event}
+                                            selected={event.timeSlot}
                                             showTimeSelect
-                                            onChange={(date) => handleTempCalendarChange(index, date)}
+                                            onChange={(date) => handleTempCalendarChange(event.id, date)}
                                             dateFormat="MMMM d, yyyy h:mm aa"
                                             placeholderText="Select a date and time"
                                             minimumDate={moment().toDate()}
                                         />
                                     </div>
-                                    <IconButton onClick={() => handleDeleteTempEvent(index)}>
+                                    <IconButton onClick={() => handleDeleteTempEvent(event.id)}>
                                         <CloseIcon />
                                     </IconButton>
                                 </ListItem>

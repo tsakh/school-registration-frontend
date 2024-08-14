@@ -7,6 +7,7 @@ import AdminSideMenu from './AdminSideMenu';
 export default function UpdatableStepsGrid() {
     const [stepsData, setStepsData] = useState([]);
     const [menuHover, setMenuHover] = useState(false);
+    const [renderAgain, setRenderAgain] = useState(true);
 
     useEffect(() => {
         const fetchStepsData = async () => {
@@ -23,8 +24,12 @@ export default function UpdatableStepsGrid() {
         };
 
         fetchStepsData();
-    }, []);
+    }, [renderAgain]);
 
+    
+    const dataUpdated = () => {
+        setRenderAgain(!renderAgain);
+    }
     const updateStepData = (index, updatedStep) => {
         const updatedSteps = [...stepsData];
         updatedSteps[index] = updatedStep;
@@ -45,7 +50,7 @@ export default function UpdatableStepsGrid() {
                 <Grid container spacing={2} justifyContent="center" alignItems="center">
                     {stepsData.map((stepData, index) => (
                         <Grid item key={index} xs={12} sm={6} md={4} lg={3} style={{ display: 'flex', justifyContent: 'center' }}>
-                            <UpdatableStepCard stepData={stepData} updateStepData={(updatedStep) => updateStepData(index, updatedStep)} />
+                            <UpdatableStepCard stepData={stepData} updateStepData={(updatedStep) => updateStepData(index, updatedStep)} onUpdate = {dataUpdated} />
                         </Grid>
                     ))}
                 </Grid>
