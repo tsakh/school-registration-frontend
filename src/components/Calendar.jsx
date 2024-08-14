@@ -59,6 +59,7 @@ export default function Calendar(props) {
     };
 
     return (
+
         <form onSubmit={handleSubmit}>
             <FormControl component="fieldset">
                 <FormLabel component="legend">Please, select your compatible option</FormLabel>

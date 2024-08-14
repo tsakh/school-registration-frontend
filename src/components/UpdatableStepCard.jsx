@@ -25,6 +25,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
+import EventIcon from '@mui/icons-material/Event';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -120,9 +121,14 @@ export default function UpdatableStepCard(props) {
     return (
         <Card sx={{ width: '20vw' }}>
             <CardContent>
-                <Typography>
-                    {obj.stepName}
-                </Typography>
+                <Box display="flex" justifyContent="space-between" alignItems="center"> 
+                    <Typography>
+                        {obj.stepName}
+                    </Typography>
+                    {obj.calendarEvent && (
+                                <EventIcon style={{ marginLeft: '8px' }} color="primary" />
+                            )}
+                </Box>
             </CardContent>
 
             <CardActions>
