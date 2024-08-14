@@ -44,7 +44,7 @@ export default function Calendar(props) {
             stepId: props.stepId, 
             stepEventId: selectedOption.id
         };
-
+        console.log(props)
         try {
             const response = await axios.post(url, requestData, {
                 headers: {
