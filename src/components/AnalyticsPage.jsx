@@ -3,10 +3,9 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Container, Grid, Button, Menu, MenuItem, Checkbox, ListItemText, FormControl,Typography, Box } from '@mui/material';
-import { getGradesForAdmin,getSenStudentsInformation } from '../services/api';
+import { getGradesForAdmin,getSenStudentsInformation,downloadReport } from '../services/api';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { PieChart } from '@mui/x-charts/PieChart';
-import { Grade } from '@mui/icons-material';
 import AdminSideMenu from './AdminSideMenu';
 import {useState } from 'react';
 
@@ -78,6 +77,30 @@ export default function AnalyticsPage() {
         }
     }
 
+    const handleDownloadButton = async() => {
+        const dateStart = startDate.format('YYYY-MM-DD');
+        const dateEnd = endDate.format('YYYY-MM-DD');
+        const gradesArr = chosenGrades.join(',');
+
+        try{
+            const reportData = await downloadReport({dateStart,dateEnd,gradesArr});
+            const url = window.URL.createObjectURL(new Blob([reportData.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'analytics.xlsx';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch(error){
+            console.log(error);
+
+        }
+        
+
+
+    }
+
     return (
         <Box sx={{ display: 'flex' }}>
         <AdminSideMenu onHover={setMenuHover} />
@@ -131,6 +154,12 @@ export default function AnalyticsPage() {
                     <Grid item>
                         <Button variant="contained" color="secondary" onClick={handleSubmit}>
                             გენერირება
+                        </Button>
+                    </Grid>
+
+                    <Grid item>
+                        <Button variant="contained" color="secondary" onClick={handleDownloadButton}>
+                            გადმოწერა
                         </Button>
                     </Grid>
                 </Grid>

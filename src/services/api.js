@@ -74,3 +74,8 @@ export const getSenStudentsInformation = (reqBody) => {
 export const getGradesForAdmin = () => {
     return apiClient.get('admin/management/grades');
 };
+
+export const downloadReport = (params) => {
+    return apiClient.get('/admin/report',{params : {startDate : params.dateStart,endDate: params.dateEnd,grades : params.gradesArr, language: 'EN'},
+    responseType:'blob'});
+}
