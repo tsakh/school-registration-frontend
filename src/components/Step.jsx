@@ -64,6 +64,7 @@ export default function StepCard(props) {
                         <Calendar options = {obj.timeSlots} selectedDate = {obj.chosenTimeSlot}/>
                         }
                     
+
                 </Box>
 
             </Collapse>
