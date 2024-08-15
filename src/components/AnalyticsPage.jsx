@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Container, Grid, Button, Menu, MenuItem, Checkbox, ListItemText, FormControl,Typography, Box } from '@mui/material';
-import { getGradesForAdmin,getSenStudentsInformation,downloadReport } from '../services/api';
+import { getGradesForAdmin,getSenStudentsInformation,downloadReport,getSibilingInformation,getSchoolInfo} from '../services/api';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { PieChart } from '@mui/x-charts/PieChart';
 import AdminSideMenu from './AdminSideMenu';
@@ -11,13 +11,19 @@ import {useState } from 'react';
 
 export default function AnalyticsPage() {
   
+    const initialStateForSchoolInfo = [{id: '1', count: 0},{id: '2', count: 0},{id: '3', count: 0},{id: '4', count: 0}]
+
     const [startDate, setStartDate] = React.useState(dayjs('2024-01-01')); // Starting from 1st January 2024
     const [endDate, setEndDate] = React.useState(dayjs()); // Current date
     const [grades, setGrades] = React.useState([]);
     const [chosenGrades, setChosenGrades] = React.useState([]);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [senStudentsInfo, setSenStudentsInfo] = React.useState([0,0]);
+    const [schoolInfo, setSchoolInfo] = React.useState(initialStateForSchoolInfo);
+    const [sibilingsInfo, setSibilingsInfo] = React.useState([0,0]);
+
     const [menuHover, setMenuHover] = useState(false);
+
 
     const loadGrades = async () => {
         try {
@@ -41,6 +47,42 @@ export default function AnalyticsPage() {
         }
     };
 
+
+    const loadSibilingInformation = async () => {
+        const dateStart = startDate.format('YYYY-MM-DD');
+        const dateEnd = endDate.format('YYYY-MM-DD');
+        try {
+            const gradesArr = chosenGrades.join(',');
+            const response = await getSibilingInformation({dateStart, dateEnd,gradesArr});
+            setSibilingsInfo([response.data.siblingsInSameSchoolNum, response.data.resultSize]); 
+        } catch (error) {
+            console.log("Error during getting sibilings information:", error);
+        }
+    };
+
+    const loadSchoolInfo = async () => {
+        const dateStart = startDate.format('YYYY-MM-DD');
+        const dateEnd = endDate.format('YYYY-MM-DD');
+        try {
+            const gradesArr = chosenGrades.join(',');
+            const response = await getSchoolInfo({dateStart, dateEnd,gradesArr});
+            const updatedArray = response.data;
+            if(updatedArray.length == 0) {
+                setSchoolInfo(initialStateForSchoolInfo);
+                return;
+            }
+            const newSchoolInfo = schoolInfo.map ( elem => {
+                const newData = updatedArray.find(item => item.id === elem.id);
+                return newData ? { ...elem, count: newData.value } : elem;
+            })
+           
+            setSchoolInfo(newSchoolInfo); 
+        } catch (error) {
+            console.log("Error during getting schools information:", error);
+        }
+    };
+
+
     React.useEffect(() => {
         loadGrades(); 
     }, []);
@@ -48,6 +90,8 @@ export default function AnalyticsPage() {
     React.useEffect(() => {
         if (chosenGrades.length > 0) {
             loadSenStudents(); 
+            loadSibilingInformation();
+            loadSchoolInfo();
         }
     }, [grades]);
    
@@ -65,6 +109,9 @@ export default function AnalyticsPage() {
     const handleSubmit = () => {
         
         loadSenStudents();
+        loadSibilingInformation();
+        loadSchoolInfo();
+        console.log(schoolInfo);
     };   
 
     const handleGradeChange = (currGrade) => {
@@ -187,9 +234,59 @@ export default function AnalyticsPage() {
                 />
             ) : (
                 <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
-                    დროის მოცემულ ინტერვალში სპეციალური საჭიროების მქონე მოსწავლეებზე ინფორმაცია არ არსებობს
+                    დროის მოცემულ ინტერვალში სპეციალური საჭიროების მქონე მოსწავლეებზე მონაცემები არ არსებობს
                 </Typography>
             )}
+
+        {schoolInfo.reduce((accumulator, current) => accumulator+ current.count, 0) > 0 ? (
+                <PieChart
+
+                width={400}
+                height={200}
+                
+                    series={[
+                        {
+                            data: [
+                                { id: 0, value: schoolInfo[0].count, label: 'სკოლის ვებსაიტი' },
+                                { id: 1, value: schoolInfo[1].count, label: 'სოციალური მედია' },
+                                { id: 3, value: schoolInfo[2].count, label: 'რეკომენდაცია' },
+                                { id: 4, value: schoolInfo[3].count, label: 'სხვა' },
+                            ],
+                        },
+                        
+                    ]}   
+                 
+                />
+            ) : (
+                <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
+                    დროის მოცემულ ინტერვალში სკოლის შესახებ მიღებულ ინფორმაციაზე მონაცემები არ არსებობს
+                </Typography>
+            )}
+
+            {sibilingsInfo[1] > 0 ? (
+                <PieChart
+
+                width={400}
+                height={200}
+                
+                    series={[
+                        {
+                            data: [
+                                { id: 0, value: sibilingsInfo[0], label: 'და/ძმა ამ სკოლის მოსწავლეა' },
+                                { id: 1, value: sibilingsInfo[1] - sibilingsInfo[0], label: 'და/ძმა ამ სკოლის მოსწავლე არ არის' },
+                            ],
+                        },
+                        
+                    ]}   
+                 
+                />
+            ) : (
+                <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
+                    დროის მოცემულ ინტერვალში დარეგისტრირებული მოსწავლის და/ძმაზე მონაცემები არ არსებობს
+                </Typography>
+            )}
+
+
 
             
         </Container>

@@ -70,6 +70,15 @@ export const getSenStudentsInformation = (reqBody) => {
     return apiClient.get('/admin/analytics/SEN',{params : {startDate : reqBody.dateStart,endDate: reqBody.dateEnd,grades : reqBody.gradesArr}});
 }
 
+export const getSibilingInformation = (reqBody) => {
+    return apiClient.get('/admin/analytics/siblings',{params : {startDate : reqBody.dateStart,endDate: reqBody.dateEnd,grades : reqBody.gradesArr}});
+}
+
+export const getSchoolInfo = (reqBody) => {
+    return apiClient.get('/admin/analytics/school-information',{params : {startDate : reqBody.dateStart,endDate: reqBody.dateEnd,grades : reqBody.gradesArr, language : 'GE'}});
+}
+
+
 
 export const getGradesForAdmin = () => {
     return apiClient.get('admin/management/grades');
