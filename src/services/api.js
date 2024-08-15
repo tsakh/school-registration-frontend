@@ -78,6 +78,15 @@ export const getSchoolInfo = (reqBody) => {
     return apiClient.get('/admin/analytics/school-information',{params : {startDate : reqBody.dateStart,endDate: reqBody.dateEnd,grades : reqBody.gradesArr, language : 'GE'}});
 }
 
+export const getRegisteredInMonths = (reqBody) => {
+    return apiClient.get('/admin/analytics/months',{params : {startDate : reqBody.dateStart,endDate: reqBody.dateEnd,grades : reqBody.gradesArr}});
+}
+
+export const getRegisteredInGrades = (reqBody) => {
+    return apiClient.get('/admin/analytics/grades',{params : {startDate : reqBody.dateStart,endDate: reqBody.dateEnd,grades : reqBody.gradesArr}});
+}
+
+
 
 
 export const getGradesForAdmin = () => {

@@ -3,14 +3,36 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Container, Grid, Button, Menu, MenuItem, Checkbox, ListItemText, FormControl,Typography, Box } from '@mui/material';
-import { getGradesForAdmin,getSenStudentsInformation,downloadReport,getSibilingInformation,getSchoolInfo} from '../services/api';
+import { getGradesForAdmin,getSenStudentsInformation,downloadReport,getSibilingInformation,getSchoolInfo,getRegisteredInMonths,getRegisteredInGrades} from '../services/api';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { PieChart } from '@mui/x-charts/PieChart';
+import { BarChart } from '@mui/x-charts/BarChart';
 import AdminSideMenu from './AdminSideMenu';
 import {useState } from 'react';
 
 export default function AnalyticsPage() {
-  
+    
+    const chartSettingsForStudentNum = {
+        yAxis: [
+          {
+            label: 'რაოდენობა',
+          },
+        ],
+        series: [{ dataKey: 'value', label: 'დარეგისტრირებული მოსწავლეები კონკრეტულ თვეში' }],
+        height :300,
+        width : 500
+      };
+
+      const chartSettingForGrades = {
+        yAxis: [
+          {
+            label: 'რაოდენობა',
+          },
+        ],
+        series: [{ dataKey: 'grade', label: 'დარეგისტრირებული მოსწავლეები კონკრეტულ კლასებზე' }],
+        height :300,
+        width : 500
+      };
     const initialStateForSchoolInfo = [{id: '1', count: 0},{id: '2', count: 0},{id: '3', count: 0},{id: '4', count: 0}]
 
     const [startDate, setStartDate] = React.useState(dayjs('2024-01-01')); // Starting from 1st January 2024
@@ -21,7 +43,8 @@ export default function AnalyticsPage() {
     const [senStudentsInfo, setSenStudentsInfo] = React.useState([0,0]);
     const [schoolInfo, setSchoolInfo] = React.useState(initialStateForSchoolInfo);
     const [sibilingsInfo, setSibilingsInfo] = React.useState([0,0]);
-
+    const [registeredInMonth, setRegisteredInMonth] = React.useState([]);
+    const [registeredInGrades, setRegisteredInGrades] = React.useState([]);
     const [menuHover, setMenuHover] = useState(false);
 
 
@@ -67,7 +90,7 @@ export default function AnalyticsPage() {
             const gradesArr = chosenGrades.join(',');
             const response = await getSchoolInfo({dateStart, dateEnd,gradesArr});
             const updatedArray = response.data;
-            if(updatedArray.length == 0) {
+            if(updatedArray.length === 0) {
                 setSchoolInfo(initialStateForSchoolInfo);
                 return;
             }
@@ -83,6 +106,31 @@ export default function AnalyticsPage() {
     };
 
 
+    const loadRegisteredInMonths = async () => {
+        const dateStart = startDate.format('YYYY-MM-DD');
+        const dateEnd = endDate.format('YYYY-MM-DD');
+        try {
+            const gradesArr = chosenGrades.join(',');
+            const response = await getRegisteredInMonths({dateStart, dateEnd,gradesArr});
+            setRegisteredInMonth(response.data); 
+        } catch (error) {
+            console.log("Error during month informations:", error);
+        }
+    };
+
+    const loadRegisteredInGrades = async () => {
+        const dateStart = startDate.format('YYYY-MM-DD');
+        const dateEnd = endDate.format('YYYY-MM-DD');
+        try {
+            const gradesArr = chosenGrades.join(',');
+            const response = await getRegisteredInGrades({dateStart, dateEnd,gradesArr});
+            setRegisteredInGrades(response.data); 
+        } catch (error) {
+            console.log("Error during month informations:", error);
+        }
+    }
+
+
     React.useEffect(() => {
         loadGrades(); 
     }, []);
@@ -92,6 +140,8 @@ export default function AnalyticsPage() {
             loadSenStudents(); 
             loadSibilingInformation();
             loadSchoolInfo();
+            loadRegisteredInMonths();
+            loadRegisteredInGrades();
         }
     }, [grades]);
    
@@ -111,7 +161,8 @@ export default function AnalyticsPage() {
         loadSenStudents();
         loadSibilingInformation();
         loadSchoolInfo();
-        console.log(schoolInfo);
+        loadRegisteredInMonths();
+        loadRegisteredInGrades();
     };   
 
     const handleGradeChange = (currGrade) => {
@@ -212,6 +263,40 @@ export default function AnalyticsPage() {
                 </Grid>
             </LocalizationProvider>
             
+            {
+                registeredInMonth.length > 0 ? (
+                    <BarChart
+                    dataset={registeredInMonth}
+                    xAxis={[
+                      { scaleType: 'band', dataKey: 'month' },
+                    ]}
+                    {...chartSettingsForStudentNum}
+                />
+                ) : (
+                    <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
+                    დროის მოცემულ ინტერვალში დარეგისტრირებულ მოსწავლეებზე მონაცემები არ არსებობს
+                    </Typography>
+
+                )
+            }
+
+            {
+                registeredInGrades.length > 0 ? (
+                    <BarChart
+                    dataset={registeredInGrades}
+                    xAxis={[
+                      { scaleType: 'band', dataKey: 'studentAmount' },
+                    ]}
+                    {...chartSettingForGrades}
+                />
+                ) : (
+                    <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
+                    დროის მოცემულ ინტერვალში შესაბამის კლასში დარეგისტრირებულ მოსწავლეებზე მონაცემები არ არსებობს
+                    </Typography>
+
+                )
+            }
+    
            
             {senStudentsInfo[1] > 0 ? (
                 <PieChart
@@ -286,10 +371,10 @@ export default function AnalyticsPage() {
                 </Typography>
             )}
 
-
-
-            
-        </Container>
+           
+  
+    
+    </Container>
         </Box>
     );
 }
