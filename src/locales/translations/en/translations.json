@@ -42,6 +42,32 @@
         "Submit" : "Submit",
         "CurrentGrade" : "Current grade",
         "GradeApplyingFor": "Grade applying for"
+    },
+
+    "Analytics" : {
+        "Quantity" :"quantity",
+        "Classes" : "classes",
+        "Charts" : "charts",
+        "DownloadReport" : "download report",
+        "RegisteredStudents" : "The number of registered students in a specific month",
+        "RegisteredInClasses" : "Registered students for specific classes",
+        "SEN" : "SEN",
+        "NotSEN" : "NO SPECIAL NEEDS",
+        "SchoolWebsite" : "School website",
+        "SocialMedia" : "Social media",
+        "Recommendation" :"Recommendation",
+        "Other" : "Other",
+        "SiblingInSameSchool" :"Sibling in same school",
+        "SibilingNotInSameSchool" : "Sibiling not in the same school",
+        "DateStart" : "Date start",
+        "DateEnd" : "Date end",
+        "missingInfoRegStudents":"There is no data on registered students in the given time interval",
+        "missingInfoGrades":"There is no data on the students registered in the respective class in the given time interval",
+        "missingInfoSen":"There is no data on students with special needs in the given time interval",
+        "missingInfoSibiling":"There is no data on the information received about the school in the given time interval",
+        "misingInfoSource":"There is no data on the student's sibling registered in the given time interval"
+
+
     }
     
 }

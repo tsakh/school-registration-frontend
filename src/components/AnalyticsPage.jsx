@@ -2,23 +2,49 @@ import * as React from 'react';
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Container, Grid, Button, Menu, MenuItem, Checkbox, ListItemText, FormControl,Typography, Box } from '@mui/material';
+import { Container, Grid, Button, Menu, MenuItem, Checkbox, ListItemText, FormControl,Typography, Box,ListItemIcon } from '@mui/material';
 import { getGradesForAdmin,getSenStudentsInformation,downloadReport,getSibilingInformation,getSchoolInfo,getRegisteredInMonths,getRegisteredInGrades} from '../services/api';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { BarChart } from '@mui/x-charts/BarChart';
 import AdminSideMenu from './AdminSideMenu';
 import {useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import LanguageIcon from '@mui/icons-material/Language';
+
+
 
 export default function AnalyticsPage() {
     
+    
+    const {t : tCommon} =  useTranslation('translation', { keyPrefix: 'Common' });
+
+    const { t , i18n} = useTranslation('translation', { keyPrefix: 'Analytics' });
+
+    const [language, setLanguage] = React.useState(null);
+
+
+      const handleOpenMenu = (event) => {
+        setLanguage(event.currentTarget);
+      };
+    
+      const handleCloseMenu = () => {
+        setLanguage(null);
+      };
+    
+      const changeLanguage = (lang) => {
+        i18n.changeLanguage(lang);
+        handleCloseMenu();
+      };
+
+
     const chartSettingsForStudentNum = {
         yAxis: [
           {
-            label: 'რაოდენობა',
+            label: t('Quantity')
           },
         ],
-        series: [{ dataKey: 'value', label: 'დარეგისტრირებული მოსწავლეები კონკრეტულ თვეში' }],
+        series: [{ dataKey: 'value', label: t('RegisteredStudents') }],
         height :300,
         width : 500
       };
@@ -26,10 +52,10 @@ export default function AnalyticsPage() {
       const chartSettingForGrades = {
         yAxis: [
           {
-            label: 'რაოდენობა',
+            label: t('Quantity')
           },
         ],
-        series: [{ dataKey: 'grade', label: 'დარეგისტრირებული მოსწავლეები კონკრეტულ კლასებზე' }],
+        series: [{ dataKey: 'grade', label: t('RegisteredInClasses') }],
         height :300,
         width : 500
       };
@@ -181,7 +207,8 @@ export default function AnalyticsPage() {
         const gradesArr = chosenGrades.join(',');
 
         try{
-            const reportData = await downloadReport({dateStart,dateEnd,gradesArr});
+            const lang = i18n.language.includes('geo') ? 'GE' : 'ENG';
+            const reportData = await downloadReport({dateStart,dateEnd,gradesArr,lang});
             const url = window.URL.createObjectURL(new Blob([reportData.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
             const link = document.createElement('a');
             link.href = url;
@@ -203,18 +230,19 @@ export default function AnalyticsPage() {
         <Box sx={{ display: 'flex' }}>
         <AdminSideMenu onHover={setMenuHover} />
         <Container sx={{ marginTop: 2, ml: menuHover ? '20vw' : '5vw', transition: 'margin-left 0.3s' }}>
+           
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item>
                         <DatePicker
-                            label="საწყისი თარიღი"
+                            label={t('DateStart')}
                             value={startDate}
                             onChange={(newValue) => setStartDate(newValue)}
                         />
                     </Grid>
                     <Grid item>
                         <DatePicker
-                            label="საბოლოო თარიღი"
+                            label={t('DateEnd')}
                             value={endDate}
                             onChange={(newValue) => setEndDate(newValue)}
                         />
@@ -227,7 +255,7 @@ export default function AnalyticsPage() {
                                 onClick={handleClick}
                                 variant="contained"
                             >
-                                კლასები
+                                {t('Classes')}
                             </Button>
                             <Menu
                                 id="grade-menu"
@@ -251,14 +279,46 @@ export default function AnalyticsPage() {
                     </Grid>
                     <Grid item>
                         <Button variant="contained" color="secondary" onClick={handleSubmit}>
-                            გენერირება
+                            {t('Charts')}
                         </Button>
                     </Grid>
 
                     <Grid item>
                         <Button variant="contained" color="secondary" onClick={handleDownloadButton}>
-                            გადმოწერა
+                         {t('DownloadReport')}
                         </Button>
+                    </Grid>
+
+                    <Grid item>
+                    <Button
+                    aria-controls="language-menu"
+                    aria-haspopup="true"
+                    onClick={handleOpenMenu}
+                    startIcon={<LanguageIcon />}
+                    variant="contained"
+                >
+                {tCommon('Language')}
+                </Button>
+                <Menu
+                    id="language-menu"
+                    anchorEl={language}
+                    keepMounted
+                    open={Boolean(language)}
+                    onClose={handleCloseMenu}
+                >
+                <MenuItem onClick={() => changeLanguage('en')}>
+                    <ListItemIcon>
+                    <img src="/flags/en.png" width='15vw' height='15vh' alt="English" />
+                    </ListItemIcon>
+                    <ListItemText primary="English" />
+                </MenuItem>
+                <MenuItem onClick={() => changeLanguage('geo')}>
+                    <ListItemIcon>
+                    <img src="/flags/geo.png" width='15vw' height='15vh' alt="Georgian" />
+                    </ListItemIcon>
+                    <ListItemText primary="ქართული" />
+                </MenuItem>
+                </Menu>
                     </Grid>
                 </Grid>
             </LocalizationProvider>
@@ -274,7 +334,7 @@ export default function AnalyticsPage() {
                 />
                 ) : (
                     <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
-                    დროის მოცემულ ინტერვალში დარეგისტრირებულ მოსწავლეებზე მონაცემები არ არსებობს
+                        {t('missingInfoRegStudents')}
                     </Typography>
 
                 )
@@ -291,8 +351,8 @@ export default function AnalyticsPage() {
                 />
                 ) : (
                     <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
-                    დროის მოცემულ ინტერვალში შესაბამის კლასში დარეგისტრირებულ მოსწავლეებზე მონაცემები არ არსებობს
-                    </Typography>
+                        {t('missingInfoGrades')}
+                       </Typography>
 
                 )
             }
@@ -307,8 +367,8 @@ export default function AnalyticsPage() {
                     series={[
                         {
                             data: [
-                                { id: 0, value: senStudentsInfo[0], label: 'სსმმ' },
-                                { id: 1, value: senStudentsInfo[1] - senStudentsInfo[0], label: 'არა სსმმ' },
+                                { id: 0, value: senStudentsInfo[0], label: t('SEN') },
+                                { id: 1, value: senStudentsInfo[1] - senStudentsInfo[0], label:  t('NotSEN') },
                             ],
                         },
                     ]}
@@ -319,8 +379,8 @@ export default function AnalyticsPage() {
                 />
             ) : (
                 <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
-                    დროის მოცემულ ინტერვალში სპეციალური საჭიროების მქონე მოსწავლეებზე მონაცემები არ არსებობს
-                </Typography>
+                        {t('missingInfoSen')}
+                 </Typography>
             )}
 
         {schoolInfo.reduce((accumulator, current) => accumulator+ current.count, 0) > 0 ? (
@@ -332,10 +392,10 @@ export default function AnalyticsPage() {
                     series={[
                         {
                             data: [
-                                { id: 0, value: schoolInfo[0].count, label: 'სკოლის ვებსაიტი' },
-                                { id: 1, value: schoolInfo[1].count, label: 'სოციალური მედია' },
-                                { id: 3, value: schoolInfo[2].count, label: 'რეკომენდაცია' },
-                                { id: 4, value: schoolInfo[3].count, label: 'სხვა' },
+                                { id: 0, value: schoolInfo[0].count, label: t('SchoolWebsite') },
+                                { id: 1, value: schoolInfo[1].count, label: t('SocialMedia') },
+                                { id: 3, value: schoolInfo[2].count, label: t('Recommendation') },
+                                { id: 4, value: schoolInfo[3].count, label: t('Other') },
                             ],
                         },
                         
@@ -344,8 +404,8 @@ export default function AnalyticsPage() {
                 />
             ) : (
                 <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
-                    დროის მოცემულ ინტერვალში სკოლის შესახებ მიღებულ ინფორმაციაზე მონაცემები არ არსებობს
-                </Typography>
+                        {t('missingInfoSibiling')}
+                  </Typography>
             )}
 
             {sibilingsInfo[1] > 0 ? (
@@ -357,8 +417,8 @@ export default function AnalyticsPage() {
                     series={[
                         {
                             data: [
-                                { id: 0, value: sibilingsInfo[0], label: 'და/ძმა ამ სკოლის მოსწავლეა' },
-                                { id: 1, value: sibilingsInfo[1] - sibilingsInfo[0], label: 'და/ძმა ამ სკოლის მოსწავლე არ არის' },
+                                { id: 0, value: sibilingsInfo[0], label: t('SiblingInSameSchool') },
+                                { id: 1, value: sibilingsInfo[1] - sibilingsInfo[0], label: t('SibilingNotInSameSchool') },
                             ],
                         },
                         
@@ -367,7 +427,7 @@ export default function AnalyticsPage() {
                 />
             ) : (
                 <Typography variant="h6" align="center" sx={{ marginTop: 4 }}>
-                    დროის მოცემულ ინტერვალში დარეგისტრირებული მოსწავლის და/ძმაზე მონაცემები არ არსებობს
+                    {t('misingInfoSource')}
                 </Typography>
             )}
 

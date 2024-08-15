@@ -94,6 +94,6 @@ export const getGradesForAdmin = () => {
 };
 
 export const downloadReport = (params) => {
-    return apiClient.get('/admin/report',{params : {startDate : params.dateStart,endDate: params.dateEnd,grades : params.gradesArr, language: 'EN'},
+    return apiClient.get('/admin/report',{params : {startDate : params.dateStart,endDate: params.dateEnd,grades : params.gradesArr, language: params.lang},
     responseType:'blob'});
 }
