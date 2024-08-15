@@ -18,6 +18,17 @@ import DownloadIcon from '@mui/icons-material/Download';
 
 
 export default function AnalyticsPage() {
+
+    const pieChartColors = {
+        sen: ["#FF6F61", "#6B5B95"], 
+        schoolInfo: ["#FFC107", "#03A9F4", "#4CAF50", "#FF5722"],
+        sibilingsInfo: ["#9C27B0", "#E91E63"] 
+    }
+
+    const barChartColors = {
+        studentNum: "#99CCFF", 
+        grades: "#90ee90" 
+    };
     
     
     const {t : tCommon} =  useTranslation('translation', { keyPrefix: 'Common' });
@@ -47,10 +58,10 @@ export default function AnalyticsPage() {
             label: t('Quantity')
           },
         ],
-        series: [{ dataKey: 'value', label: t('RegisteredStudents') }],
-        height :300,
-        width : 500
-      };
+        series: [{ dataKey: 'value', label: t('RegisteredStudents'), color:barChartColors.studentNum }],
+        height: window.innerHeight * 1/3,
+        width: Math.min(window.innerWidth * 0.9, 800)
+        };
 
       const chartSettingForGrades = {
         yAxis: [
@@ -58,9 +69,9 @@ export default function AnalyticsPage() {
             label: t('Quantity')
           },
         ],
-        series: [{ dataKey: 'grade', label: t('RegisteredInClasses') }],
-        height :300,
-        width : 500
+        series: [{ dataKey: 'grade', label: t('RegisteredInClasses'), color: barChartColors.grades}],
+        height: window.innerHeight * 1/3,
+        width: Math.min(window.innerWidth * 0.9, 800)
       };
     const initialStateForSchoolInfo = [{id: '1', count: 0},{id: '2', count: 0},{id: '3', count: 0},{id: '4', count: 0}]
 
@@ -230,9 +241,27 @@ export default function AnalyticsPage() {
     }
 
     return (
-        <Box sx={{ display: 'flex' }}>
-        <AdminSideMenu onHover={setMenuHover} />
-        <Container sx={{ marginTop: 2, ml: menuHover ? '20vw' : '5vw', transition: 'margin-left 0.3s' }}>
+        <Box sx={{  display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '100vh',
+            padding: 2,
+            backgroundColor: '#f5f5f5' }}>
+        <AdminSideMenu onHover={setMenuHover} backgroundColor='#F6F7EA' />
+        <Container sx={{
+            marginTop: 2,
+            ml: menuHover ? '20vw' : '5vw',
+            transition: 'margin-left 0.3s',
+            backgroundColor: 'white',
+            borderRadius: 2,
+            padding: 3,
+            boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+ }}>
            
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Grid container spacing={2} alignItems="center">
@@ -282,13 +311,13 @@ export default function AnalyticsPage() {
                         </FormControl>
                     </Grid>
                     <Grid item>
-                        <Button variant="contained" color="secondary" onClick={handleSubmit}  startIcon={<BarChartIcon />}>
+                        <Button variant="contained" color="primary" onClick={handleSubmit}  startIcon={<BarChartIcon />}>
                             {t('Charts')}
                         </Button>
                     </Grid>
 
                     <Grid item>
-                        <Button variant="contained" color="secondary" onClick={handleDownloadButton}  startIcon={<DownloadIcon />}>
+                        <Button variant="contained" color="primary" onClick={handleDownloadButton}  startIcon={<DownloadIcon />}>
                          {t('DownloadReport')}
                         </Button>
                     </Grid>
@@ -365,14 +394,14 @@ export default function AnalyticsPage() {
             {senStudentsInfo[1] > 0 ? (
                 <PieChart
 
-                width={400}
-                height={200}
+                width={Math.min(window.innerWidth * 0.9, 900)}
+                height={window.innerHeight * 1/4}
                 
                     series={[
                         {
                             data: [
-                                { id: 0, value: senStudentsInfo[0], label: t('SEN') },
-                                { id: 1, value: senStudentsInfo[1] - senStudentsInfo[0], label:  t('NotSEN') },
+                                { id: 0, value: senStudentsInfo[0], label: t('SEN') , color :pieChartColors.sen[0]},
+                                { id: 1, value: senStudentsInfo[1] - senStudentsInfo[0], label:  t('NotSEN'), color :pieChartColors.sen[1] },
                             ],
                         },
                     ]}
@@ -390,16 +419,15 @@ export default function AnalyticsPage() {
         {schoolInfo.reduce((accumulator, current) => accumulator+ current.count, 0) > 0 ? (
                 <PieChart
 
-                width={400}
-                height={200}
-                
+                width={Math.min(window.innerWidth * 0.9, 900)}
+                height={window.innerHeight * 1/4}
                     series={[
                         {
                             data: [
-                                { id: 0, value: schoolInfo[0].count, label: t('SchoolWebsite') },
-                                { id: 1, value: schoolInfo[1].count, label: t('SocialMedia') },
-                                { id: 3, value: schoolInfo[2].count, label: t('Recommendation') },
-                                { id: 4, value: schoolInfo[3].count, label: t('Other') },
+                                { id: 0, value: schoolInfo[0].count, label: t('SchoolWebsite'), pie : pieChartColors.schoolInfo[0] },
+                                { id: 1, value: schoolInfo[1].count, label: t('SocialMedia'), color: pieChartColors.schoolInfo[1] },
+                                { id: 3, value: schoolInfo[2].count, label: t('Recommendation'),color: pieChartColors.schoolInfo[2] },
+                                { id: 4, value: schoolInfo[3].count, label: t('Other') , color :pieChartColors.schoolInfo[3]},
                             ],
                         },
                         
@@ -415,14 +443,14 @@ export default function AnalyticsPage() {
             {sibilingsInfo[1] > 0 ? (
                 <PieChart
 
-                width={400}
-                height={200}
-                
+                width={Math.min(window.innerWidth * 0.9, 900)}
+                height={window.innerHeight * 1/4}
+
                     series={[
                         {
                             data: [
-                                { id: 0, value: sibilingsInfo[0], label: t('SiblingInSameSchool') },
-                                { id: 1, value: sibilingsInfo[1] - sibilingsInfo[0], label: t('SibilingNotInSameSchool') },
+                                { id: 0, value: sibilingsInfo[0], label: t('SiblingInSameSchool'), color:pieChartColors.sibilingsInfo[0] },
+                                { id: 1, value: sibilingsInfo[1] - sibilingsInfo[0], label: t('SibilingNotInSameSchool'), color :pieChartColors.sibilingsInfo[1]  },
                             ],
                         },
                         

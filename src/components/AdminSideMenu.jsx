@@ -9,7 +9,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import useAuth from '../customHooks/useAuth';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 
-const AdminSideMenu = ({ onHover }) => {
+const AdminSideMenu = ({ onHover, backgroundColor = 'white' }) => {
     const [hover, setHover] = useState(false);
     const navigate = useNavigate();
     const {logout} = useAuth();
@@ -43,7 +43,7 @@ const AdminSideMenu = ({ onHover }) => {
                 top: 0,
                 height: '100vh',
                 width: hover ? '20vw' : '5vw', 
-                backgroundColor: 'white',
+                backgroundColor: backgroundColor,
                 transition: 'width 0.3s',
                 color: 'black',
                 display: 'flex',
@@ -111,7 +111,7 @@ const AdminSideMenu = ({ onHover }) => {
             <Box sx={{ width: '100%', mb: 2 }}>
                 <Button
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     startIcon={<LogoutIcon />}
                     sx={{ display: 'flex', justifyContent: hover ? 'flex-start' : 'center', width: '100%' }}
                     onClick={handleLogout}
