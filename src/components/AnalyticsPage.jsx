@@ -11,6 +11,9 @@ import AdminSideMenu from './AdminSideMenu';
 import {useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import LanguageIcon from '@mui/icons-material/Language';
+import SchoolIcon from '@mui/icons-material/School';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import DownloadIcon from '@mui/icons-material/Download';
 
 
 
@@ -254,6 +257,7 @@ export default function AnalyticsPage() {
                                 aria-haspopup="true"
                                 onClick={handleClick}
                                 variant="contained"
+                                startIcon={<SchoolIcon />}
                             >
                                 {t('Classes')}
                             </Button>
@@ -278,13 +282,13 @@ export default function AnalyticsPage() {
                         </FormControl>
                     </Grid>
                     <Grid item>
-                        <Button variant="contained" color="secondary" onClick={handleSubmit}>
+                        <Button variant="contained" color="secondary" onClick={handleSubmit}  startIcon={<BarChartIcon />}>
                             {t('Charts')}
                         </Button>
                     </Grid>
 
                     <Grid item>
-                        <Button variant="contained" color="secondary" onClick={handleDownloadButton}>
+                        <Button variant="contained" color="secondary" onClick={handleDownloadButton}  startIcon={<DownloadIcon />}>
                          {t('DownloadReport')}
                         </Button>
                     </Grid>
