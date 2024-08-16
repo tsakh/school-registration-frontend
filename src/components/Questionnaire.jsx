@@ -52,11 +52,10 @@ export default function Questionnaire() {
     };
 
 
-    
     loadGrades();
     loadSchoolNames();
     loadPossibleAnswersForInfo();
-  }, []);
+  }, [language]);
 
   
 
