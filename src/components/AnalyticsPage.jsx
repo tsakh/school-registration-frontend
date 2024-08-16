@@ -69,7 +69,7 @@ export default function AnalyticsPage() {
             label: t('Quantity')
           },
         ],
-        series: [{ dataKey: 'grade', label: t('RegisteredInClasses'), color: barChartColors.grades}],
+        series: [{ dataKey: 'studentAmount', label: t('RegisteredInClasses'), color: barChartColors.grades}],
         height: window.innerHeight * 1/3,
         width: Math.min(window.innerWidth * 0.9, 800)
       };
@@ -152,6 +152,8 @@ export default function AnalyticsPage() {
         try {
             const gradesArr = chosenGrades.join(',');
             const response = await getRegisteredInMonths({dateStart, dateEnd,gradesArr});
+            const newArr = response.data;
+            newArr.sort((a,b) => new Date(a.month) - new Date(b.month))
             setRegisteredInMonth(response.data); 
         } catch (error) {
             console.log("Error during month informations:", error);
@@ -164,7 +166,15 @@ export default function AnalyticsPage() {
         try {
             const gradesArr = chosenGrades.join(',');
             const response = await getRegisteredInGrades({dateStart, dateEnd,gradesArr});
-            setRegisteredInGrades(response.data); 
+            const arr = response.data.sort((a,b) => a.grade - b.grade)
+        
+            
+            setRegisteredInGrades(arr.map(item => {
+                if (item.grade === "0") {
+                    return { ...item, grade: "preschool" };
+                }
+                return item;
+            })); 
         } catch (error) {
             console.log("Error during month informations:", error);
         }
@@ -197,7 +207,7 @@ export default function AnalyticsPage() {
     const open = Boolean(anchorEl);
 
     const handleSubmit = () => {
-        
+        console.log(registeredInGrades);
         loadSenStudents();
         loadSibilingInformation();
         loadSchoolInfo();
@@ -378,7 +388,7 @@ export default function AnalyticsPage() {
                     <BarChart
                     dataset={registeredInGrades}
                     xAxis={[
-                      { scaleType: 'band', dataKey: 'studentAmount' },
+                      { scaleType: 'band', dataKey: 'grade' },
                     ]}
                     {...chartSettingForGrades}
                 />
