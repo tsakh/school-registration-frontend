@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { json } from 'react-router-dom';
 
 const apiClient = axios.create({
     baseURL: 'http://localhost:8080', 
-    timeout: 2000,
+    timeout: 60000,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -25,6 +26,7 @@ export const signIn = (signInData) => {
 };
 
 export const signUp = (signUpData) => {
+    console.log(JSON.stringify(signUpData));
     return apiClient.post('/auth/sign-up', signUpData);
 };
 
