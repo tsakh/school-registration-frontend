@@ -26,6 +26,7 @@ export default function Calendar(props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        props.handleTimeChange();
         if (!selectedOption) {
             console.error('No option selected');
             return;
@@ -56,6 +57,8 @@ export default function Calendar(props) {
         } catch (error) {
             console.error('Error:', error);
         }
+       
+
     };
 
     return (

@@ -61,7 +61,7 @@ export default function StepCard(props) {
                     
                         {
                         obj.calendarEvent && 
-                        <Calendar options = {obj.timeSlots} selectedDate = {obj.chosenTimeSlot} stepId = {obj.stepId}/>
+                        <Calendar options = {obj.timeSlots} selectedDate = {obj.chosenTimeSlot} stepId = {obj.stepId} handleTimeChange={handleExpandClick}/>
                         }
                     
 
